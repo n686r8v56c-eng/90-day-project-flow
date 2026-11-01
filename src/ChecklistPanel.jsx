@@ -96,7 +96,7 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
   }
   async function toggleItem(groupId,itemId) {
     if(!selected || busy)return;
-    const groups=selected.groups.map(g=>g.id!==groupId?g:{...g,items:g.items.map(x=>x.id!==itemId?x:{...x,done:!x.done})});
+    const groups=selected.groups.map(g=>g.id!==groupId?g:{...g,items:g.items.map(x=>x.id!==itemId?x:{...x,done:!x.done,completedAt:!x.done?new Date().toISOString():null})});
     await updateRow(selected,{groups},'체크 상태 저장됨');
   }
   async function editText() {
@@ -129,7 +129,7 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
     if(!selected||busy)return;
     setBusy(true);setError('');
     try{
-      const groups=selected.groups.map(g=>({...g,id:uuid(),items:g.items.map(x=>({...x,id:uuid(),done:false}))}));
+      const groups=selected.groups.map(g=>({...g,id:uuid(),items:g.items.map(x=>({...x,id:uuid(),done:false,completedAt:null}))}));
       const {data,error}=await client.from('app_checklists').insert({user_id:userId,project_id:projectId,title:selected.title+' 복사',groups}).select().single();
       if(error)throw error;
       setLists(old=>[data,...old]);onChanged?.();setSelectedId(data.id);saved('체크하지 않은 새 복사본을 만들었어.');
@@ -201,13 +201,15 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
       <button className="cl-primary" disabled={busy} onClick={createFromText}>체크리스트 생성 및 저장</button>
     </div>}
     {mode==='detail'&&selected&&<>
-      <div className="cl-detail-head"><div><h2>{selected.title}</h2><p className="cl-muted">{progress} 완료{selected.archived?' · 아카이브 · 홈 집계 제외':''}</p></div>
+      <div className="cl-detail-head"><h2>{selected.title}</h2>
+        <div className="cl-detail-toolbar"><p className="cl-muted">{progress} 완료{selected.archived?' · 아카이브 · 홈 집계 제외':''}</p>
         <div className="cl-actions">
           <button type="button" aria-label={selected.archived?'아카이브에서 복원':'아카이브로 보관'} title={selected.archived?'아카이브에서 복원':'아카이브로 보관'} disabled={busy} onClick={()=>toggleArchive(selected)}>{selected.archived?<ArchiveRestore size={17}/>:<Archive size={17}/>}</button>
           <button type="button" aria-label="체크 상태 전체 초기화" title="전체 체크 초기화" disabled={busy || countDone(selected)===0} onClick={resetChecks}><RotateCcw size={17}/></button>
           <button aria-label="제목 수정" title="제목 수정" onClick={()=>{setEditing({kind:'title'});setDraft(selected.title);}}><Pencil size={17}/></button>
           <button aria-label="체크리스트 복제" title="복제" onClick={clone}><Copy size={17}/></button>
           <button aria-label="체크리스트 삭제" title="삭제" onClick={removeList}><Trash2 size={17}/></button>
+        </div>
         </div>
       </div>
       {selected.groups.map(g=>{
