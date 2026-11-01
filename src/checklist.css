@@ -35,3 +35,16 @@
 .cl-row-open strong{overflow-wrap:anywhere}
 .cl-feature-star{flex:none;display:grid;place-items:center;width:46px;min-height:46px;border-radius:10px;margin-right:5px}
 .cl-feature-star:disabled{opacity:.5}
+
+/* Tags: one line by default, expand to see all */
+.cl-tag-filter{display:flex;align-items:flex-start;gap:6px;margin:10px 0 14px;min-width:0}
+.cl-tag-line{display:flex;flex:1;gap:6px;overflow:hidden;white-space:nowrap;min-width:0}
+.cl-tag-filter.expanded .cl-tag-line{flex-wrap:wrap;white-space:normal;overflow:visible}
+.cl-tag-line button{flex-shrink:0;border:1px solid #e3d9ef;background:white;border-radius:16px;padding:6px 11px;color:#8362ad;font-size:13px}
+.cl-tag-line button.active{background:#9072bb;color:white}
+.cl-tag-expand{display:flex;align-items:center;gap:2px;white-space:nowrap;color:#8362ad;font-size:12px;padding:7px 2px}
+.cl-tag-label{display:flex;flex-direction:column;gap:8px;margin:12px 0;color:#685b73;font-weight:600}
+.cl-tag-label input,.cl-tag-edit input{min-width:0;width:100%;border:1px solid #dfd4e9;border-radius:10px;padding:11px;font-size:16px;background:white}
+.cl-detail-tags{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#8d78a2;font-size:13px;margin:4px 0 9px}
+.cl-detail-tags span{overflow-wrap:anywhere}.cl-detail-tags button{display:flex;gap:5px;align-items:center;color:#8667ac}
+.cl-tag-edit{display:flex;gap:8px;margin-bottom:10px}.cl-tag-edit button{color:#8362ad;font-weight:600}
