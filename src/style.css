@@ -226,3 +226,8 @@ header h1{font-size:20px;line-height:1.25}
 .vision-grid.list-mode .vision-card-heading{min-height:76px;flex:1;padding:12px 44px 12px 14px}
 .vision-grid.list-mode .vision-cover,.vision-grid.list-mode .vision-placeholder{height:76px;min-height:76px;width:86px;flex:0 0 86px}
 @media(max-width:380px){.vision-grid .vision-card-heading>span{font-size:15px}.vision-grid .vision-card-heading{padding-right:43px}}
+
+/* Vision detail inner tabs: images and secret wishes. */
+.vision-subtabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:#eee8f5;border-radius:12px;margin:1px 0 17px}
+.vision-subtabs button{min-width:0;padding:10px 8px;border:0;border-radius:9px;background:transparent;color:#826b97;font-size:15px;font-weight:650}
+.vision-subtabs button.active{background:white;color:#7653a2;box-shadow:0 1px 3px #34214412}
