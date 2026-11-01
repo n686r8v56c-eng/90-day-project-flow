@@ -200,3 +200,12 @@ header h1{font-size:20px;line-height:1.25}
 
 /* Active checklist name appears above the next incomplete item on Home cards. */
 .card-checklist-title{display:flex;align-items:center;gap:5px;width:100%;min-width:0;margin-top:4px;font-size:11px;font-weight:650;color:#6e528e}.card-checklist-title svg{flex-shrink:0}.card-checklist-title span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.card-focus{display:block;width:100%;min-width:0}
+
+/* Home project card: separate checklist title from next incomplete task. */
+.projectcard .card-checklist-title{display:flex;align-items:flex-start;gap:7px;min-width:0;width:100%;margin:5px 0 0;color:#674b8c;font-size:12px;line-height:1.45;font-weight:750;}
+.projectcard .card-checklist-title svg{flex:0 0 14px;margin-top:2px;}
+.projectcard .card-checklist-title>span{display:-webkit-box;min-width:0;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;overflow-wrap:anywhere;}
+.projectcard .card-focus{display:flex;align-items:flex-start;gap:8px;width:100%;min-width:0;margin-top:8px;min-height:0;color:#9689a3;font-size:12px;line-height:1.5;font-weight:450;white-space:normal;overflow:visible;}
+.projectcard .card-focus-dot{display:block;flex:0 0 8px;width:8px;height:8px;margin:5px 3px 0;border:1.5px solid #a69ab2;border-radius:50%;}
+.projectcard .card-focus-text{display:-webkit-box;min-width:0;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow-wrap:anywhere;}
+@media(max-width:390px){.projectcard .card-checklist-title,.projectcard .card-focus{font-size:11px;}}
