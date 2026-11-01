@@ -16,6 +16,49 @@ const byDay=(logs,active,date)=>{
  }
  return Object.fromEntries(Object.entries(totals).map(([k,ms])=>[k,Math.round(ms/60000)]));
 };
+// Keep the field editable while typing; commit the numeric budget on blur.
+function BudgetHourInput({label,value,onCommit}){
+ const [draft,setDraft]=useState(String(value));
+ const [focused,setFocused]=useState(false);
+ React.useEffect(()=>{if(!focused)setDraft(String(value))},[value,focused]);
+ const commit=()=>{
+  setFocused(false);
+  const parsed=Number(draft);
+  const normalized=draft.trim()===''?0:(Number.isFinite(parsed)?Math.max(0,Math.min(24,parsed)):value);
+  setDraft(String(normalized));
+  onCommit(normalized);
+ };
+ return <input aria-label={label} type="number" min="0" max="24" step="0.5" inputMode="decimal" value={draft}
+   onFocus={e=>{setFocused(true);e.target.select()}}
+   onChange={e=>setDraft(e.target.value)}
+   onBlur={commit}
+   onKeyDown={e=>{if(e.key==='Enter')e.currentTarget.blur()}}/>;
+}
+
+// Time project card: only chosen representative activities, with live Focus Flow totals.
+export function TimeKpiCard({value}){
+ const focus=useFocusTime();
+ const cfg=value||{};
+ const featured=(cfg.featured||[]).slice(0,2);
+ const today=dayKey();
+ const logs=useMemo(()=>byDay(focus.logs||[],focus.active,today),[focus.logs,focus.active,today]);
+ const selected=(cfg.activities||[]).filter(a=>featured.includes(a.name));
+ if(!selected.length)return <div className="kpi-empty">대표 시간 KPI ☆ 선택하기</div>;
+ return <>
+  {selected.map(a=>{
+   const goal=cfg.overrides?.[today]?.[a.id]??a.minutes??0;
+   const actual=logs[a.name]||0;
+   return <div className="kpi-preview" key={a.id}>
+    <small>{a.name}</small>
+    <strong>{focus.ready?minutesText(actual):'연동 대기'}</strong>
+    <span>하루 목표 {minutesText(goal)}</span>
+    {focus.ready&&<div className="mini"><div style={{width:`${goal?Math.min(100,actual/goal*100):actual?100:0}%`}}/></div>}
+   </div>;
+  })}
+  <span className="kpi-count">대표 KPI {selected.length}/2</span>
+ </>;
+}
+
 export default function TimeBudget({value,onChange}){
  const cfg=value||{};
  const focus=useFocusTime();
@@ -27,6 +70,12 @@ export default function TimeBudget({value,onChange}){
  const [hours,setHours]=useState('1');
  const [minutes,setMinutes]=useState('0');
  const saved=cfg.activities||[];
+ const featured=cfg.featured||[];
+ const toggleFeatured=a=>patch(c=>{
+  const curr=c.featured||[];
+  const next=curr.includes(a.name)?curr.filter(n=>n!==a.name):[...curr.slice(-1),a.name];
+  return {...c,featured:next,activities:(c.activities||[]).some(x=>x.name===a.name)?c.activities:[...(c.activities||[]),{...a}]};
+ });
  const linked=focus.ready;
  const activityNames=linked?focus.activities:[];
  // Preserve manually entered budgets and match existing names instead of duplicating.
@@ -48,7 +97,7 @@ export default function TimeBudget({value,onChange}){
    :{...c,activities:base.map(x=>x.id===a.id?{...x,minutes:limitMinutes(v)}:x)};
  });
  const remove=a=>{if(!window.confirm('이 활동의 시간 예산을 삭제할까요?'))return;
-  patch(c=>({...c,activities:(c.activities||[]).filter(x=>x.id!==a.id)}));
+  patch(c=>({...c,activities:(c.activities||[]).filter(x=>x.id!==a.id),featured:(c.featured||[]).filter(n=>n!==a.name)}));
  };
  const login=async(e)=>{e.preventDefault();const ok=await focus.signIn(email,password);if(ok){setPassword('');}};
  return <section className="tb-root">
@@ -59,8 +108,8 @@ export default function TimeBudget({value,onChange}){
   {focus.error&&<p className="tb-bridge-error" role="alert">{focus.error}</p>}
   {linked&&<div className="tb-summary"><div><small>오늘의 목표</small><strong>{minutesText(total)}</strong></div><div><small>선택일 사용</small><strong>{minutesText(actualTotal)}</strong></div><div><small>시간 차이</small><strong>{actualTotal>total?`+${minutesText(actualTotal-total)} 초과`:`${minutesText(total-actualTotal)} 남음`}</strong></div></div>}
   {entries.length===0&&!settings&&<p className="tb-empty">활동이 없어요. Focus Flow를 연결하거나 시간 예산 설정에서 추가해 줘.</p>}
-  {entries.map(a=>{const used=actual[a.name]||0,goal=budget(a);return <div className="tb-activity" key={a.id}><div className="tb-activity-title"><strong>{a.name}</strong>{settings&&saved.some(x=>x.id===a.id)&&<button type="button" aria-label={`${a.name} 목표 삭제`} onClick={()=>remove(a)}><Trash2 size={16}/></button>}</div><div className="tb-budget-row"><span>하루 목표</span>{settings?<div className="tb-edit-minutes"><input aria-label={`${a.name} 기본 목표 시간`} type="number" min="0" max="24" step="0.5" value={(a.minutes||0)/60} onChange={e=>updateMinutes(a,Number(e.target.value)*60)}/> 시간</div>:<strong>{minutesText(goal)}</strong>}</div>{settings&&<div className="tb-budget-row"><span>{date}만 변경</span><div className="tb-edit-minutes"><input aria-label={`${a.name} 해당 날짜 목표 시간`} type="number" min="0" max="24" step="0.5" value={goal/60} onChange={e=>updateMinutes(a,Number(e.target.value)*60,true)}/> 시간</div></div>}<div className="tb-budget-row"><span>실제 사용</span>{linked?<strong>{minutesText(used)} {used>goal?<em className="tb-over">(+{minutesText(used-goal)} 초과)</em>:null}</strong>:<span className="tb-unlinked">연동 대기</span>}</div>{linked&&<div className="tb-progress"><div className={used>goal?'over':''} style={{width:`${goal?Math.min(100,used/goal*100):used>0?100:0}%`}}/></div>}</div>})}
-  {settings&&<div className="tb-add"><h4>활동 직접 추가</h4><p>Focus Flow 활동은 자동 표시돼. 필요한 경우에만 직접 추가해 줘.</p><input placeholder="활동 이름" value={name} onChange={e=>setName(e.target.value)}/><div className="tb-add-controls"><label>시간 <input type="number" min="0" max="24" value={hours} onChange={e=>setHours(e.target.value)}/></label><label>분 <input type="number" min="0" max="59" value={minutes} onChange={e=>setMinutes(e.target.value)}/></label><button type="button" onClick={add} disabled={!name.trim()||entries.some(a=>a.name===name.trim())}><Plus size={16}/> 추가</button></div></div>}
+  {entries.map(a=>{const used=actual[a.name]||0,goal=budget(a);return <div className="tb-activity" key={a.id}><div className="tb-activity-title"><strong>{a.name}</strong><div className="tb-activity-actions"><button type="button" className="tb-feature-star" aria-label={`${a.name} 대표 KPI ${featured.includes(a.name)?'해제':'지정'}`} aria-pressed={featured.includes(a.name)} title="Time 카드에 대표 표시 (최대 2개)" onClick={()=>toggleFeatured(a)}><svg width="21" height="21" viewBox="0 0 24 24" fill={featured.includes(a.name)?'#9873c8':'none'} stroke={featured.includes(a.name)?'#9873c8':'#a99cb7'} strokeWidth="2" strokeLinejoin="round"><path d="m12 2 3.09 6.26 6.91 1-5 4.87 1.18 6.87L12 17.77 5.82 21l1.18-6.87-5-4.87 6.91-1L12 2z"/></svg></button>{settings&&saved.some(x=>x.id===a.id)&&<button type="button" aria-label={`${a.name} 목표 삭제`} onClick={()=>remove(a)}><Trash2 size={16}/></button>}</div></div><div className="tb-budget-row"><span>하루 목표</span>{settings?<div className="tb-edit-minutes"><BudgetHourInput label={`${a.name} 기본 목표 시간`} value={(a.minutes||0)/60} onCommit={v=>updateMinutes(a,v*60)}/> 시간</div>:<strong>{minutesText(goal)}</strong>}</div>{settings&&<div className="tb-budget-row"><span>{date}만 변경</span><div className="tb-edit-minutes"><BudgetHourInput label={`${a.name} 해당 날짜 목표 시간`} value={goal/60} onCommit={v=>updateMinutes(a,v*60,true)}/> 시간</div></div>}<div className="tb-budget-row"><span>실제 사용</span>{linked?<strong>{minutesText(used)} {used>goal?<em className="tb-over">(+{minutesText(used-goal)} 초과)</em>:null}</strong>:<span className="tb-unlinked">연동 대기</span>}</div>{linked&&<div className="tb-progress"><div className={used>goal?'over':''} style={{width:`${goal?Math.min(100,used/goal*100):used>0?100:0}%`}}/></div>}</div>})}
+  {settings&&<div className="tb-add"><h4>활동 직접 추가</h4><p>Focus Flow 활동은 자동 표시돼. 필요한 경우에만 직접 추가해 줘.</p><input placeholder="활동 이름" value={name} onChange={e=>setName(e.target.value)}/><div className="tb-add-controls"><label>시간 <input type="number" min="0" max="24" value={hours} onFocus={e=>e.target.select()} onChange={e=>setHours(e.target.value)}/></label><label>분 <input type="number" min="0" max="59" value={minutes} onFocus={e=>e.target.select()} onChange={e=>setMinutes(e.target.value)}/></label><button type="button" onClick={add} disabled={!name.trim()||entries.some(a=>a.name===name.trim())}><Plus size={16}/> 추가</button></div></div>}
   <p className="tb-foot">기본 목표는 매일 적용돼. 특정 날짜의 목표 수정은 그 날짜에만 적용돼. Focus Flow의 기록은 조회만 하고 수정하지 않아.</p>
  </section>
 }

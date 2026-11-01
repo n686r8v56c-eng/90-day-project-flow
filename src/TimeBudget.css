@@ -19,3 +19,18 @@
 .tb-progress{height:7px;background:#eee7f5;border-radius:10px;overflow:hidden;margin-top:8px}
 .tb-progress>div{height:100%;background:#a17ac9;border-radius:10px}
 .tb-progress>div.over{background:#d58da7}
+
+/* iPhone input focus must not trigger Safari auto-zoom; prevent horizontal overflow. */
+.tb-root,.tb-root *{box-sizing:border-box}
+.tb-root{width:100%;max-width:100%;min-width:0;overflow-x:clip}
+.tb-root input,.tb-root select,.tb-root textarea{font-size:16px!important;max-width:100%;min-width:0}
+.tb-heading,.tb-date,.tb-budget-row,.tb-activity-title{min-width:0}
+.tb-heading>div,.tb-budget-row>span,.tb-activity-title>strong{min-width:0;overflow-wrap:anywhere}
+.tb-edit-minutes{min-width:0;max-width:100%;flex-shrink:0}
+.tb-edit-minutes input{width:66px;min-width:0;font-size:16px!important}
+.tb-add-controls input{width:65px;font-size:16px!important}
+.tb-date input{font-size:16px!important;min-width:0;width:140px;max-width:100%}
+.tb-activity-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.tb-activity-actions button.tb-feature-star{display:grid;place-items:center;border:0;background:transparent;padding:6px;border-radius:8px;cursor:pointer}
+.tb-activity-actions button.tb-feature-star:focus-visible{outline:2px solid #9873c8;outline-offset:2px}
+@media(max-width:390px){.tb-heading{flex-wrap:wrap}.tb-heading .tb-settings{margin-left:auto}.tb-budget-row{gap:7px}.tb-date{gap:9px}}
