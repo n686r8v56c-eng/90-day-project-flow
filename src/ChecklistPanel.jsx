@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {ArrowLeft, Plus, ClipboardCheck, Copy, Trash2, Pencil, ChevronDown, ChevronRight, Check, X, RotateCcw} from 'lucide-react';
+import {ArrowLeft, Plus, ClipboardCheck, Copy, Trash2, Pencil, ChevronDown, ChevronRight, Check, X, RotateCcw, Archive, ArchiveRestore} from 'lucide-react';
 import './checklist.css';
 
 const uuid = () => crypto.randomUUID();
@@ -50,6 +50,9 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
   const [editing,setEditing] = useState(null);
   const [draft,setDraft] = useState('');
   const selected = lists.find(x=>x.id===selectedId);
+  const activeLists = lists.filter(x=>!x.archived);
+  const archivedLists = lists.filter(x=>!!x.archived);
+  const [showArchived,setShowArchived] = useState(false);
 
   const refresh = useCallback(async () => {
     if (!client || !userId) return;
@@ -141,6 +144,14 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
     }));
     await updateRow(selected, {groups}, '모든 체크를 해제했어.');
   }
+  async function toggleArchive(row) {
+    if(!row || busy) return;
+    const next=!row.archived;
+    if(await updateRow(row,{archived:next},next?'아카이브에 보관했어. 홈 진행률에서는 제외돼.':'아카이브에서 복원했어. 홈 진행률에 다시 포함돼.')) {
+      setSelectedId(null);setMode('list');
+      if(next)setShowArchived(false);
+    }
+  }
   async function removeList(){
     if(!selected||!window.confirm(`'${selected.title}' 체크리스트를 삭제할까?`))return;
     setBusy(true);try{
@@ -160,9 +171,15 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
     {message&&<p className="cl-message" role="status">{message}</p>}
     {mode==='list'&&<>
       <p className="cl-helper">목록을 선택하면 체크할 수 있어. 새 체크리스트는 글을 붙여넣어서 만들어 줘.</p>
-      <div className="cl-list">{lists.map(l=><button className="cl-list-row" key={l.id} onClick={()=>{setSelectedId(l.id);setMode('detail');setMessage('');}}>
+      <div className="cl-list">{activeLists.map(l=><button className="cl-list-row" key={l.id} onClick={()=>{setSelectedId(l.id);setMode('detail');setMessage('');}}>
         <span><strong>{l.title}</strong><small>{countDone(l)}/{countAll(l)} 완료</small></span><ChevronRight size={18}/>
-      </button>)}{!lists.length&&<p className="cl-empty">아직 체크리스트가 없어. + 추가로 만들어 봐!</p>}</div>
+      </button>)}{!activeLists.length&&<p className="cl-empty">진행 중인 체크리스트가 없어. + 추가로 만들어 봐!</p>}</div>
+      <button type="button" className="cl-archive-toggle" onClick={()=>setShowArchived(v=>!v)} aria-expanded={showArchived}>
+        <Archive size={17}/> 아카이브 ({archivedLists.length}) {showArchived?<ChevronDown size={16}/>:<ChevronRight size={16}/>}
+      </button>
+      {showArchived&&<div className="cl-list">{archivedLists.map(l=><button className="cl-list-row cl-archived-row" key={l.id} onClick={()=>{setSelectedId(l.id);setMode('detail');setMessage('');}}>
+        <span><strong>{l.title}</strong><small>{countDone(l)}/{countAll(l)} 완료 · 집계 제외</small></span><ChevronRight size={18}/>
+      </button>)}{!archivedLists.length&&<p className="cl-empty">보관된 체크리스트가 없어.</p>}</div>}
     </>}
     {mode==='create'&&<div className="cl-card">
       <h2>글 붙여넣기</h2>
@@ -171,8 +188,9 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
       <button className="cl-primary" disabled={busy} onClick={createFromText}>체크리스트 생성 및 저장</button>
     </div>}
     {mode==='detail'&&selected&&<>
-      <div className="cl-detail-head"><div><h2>{selected.title}</h2><p className="cl-muted">{progress} 완료</p></div>
+      <div className="cl-detail-head"><div><h2>{selected.title}</h2><p className="cl-muted">{progress} 완료{selected.archived?' · 아카이브 · 홈 집계 제외':''}</p></div>
         <div className="cl-actions">
+          <button type="button" aria-label={selected.archived?'아카이브에서 복원':'아카이브로 보관'} title={selected.archived?'아카이브에서 복원':'아카이브로 보관'} disabled={busy} onClick={()=>toggleArchive(selected)}>{selected.archived?<ArchiveRestore size={17}/>:<Archive size={17}/>}</button>
           <button type="button" aria-label="체크 상태 전체 초기화" title="전체 체크 초기화" disabled={busy || countDone(selected)===0} onClick={resetChecks}><RotateCcw size={17}/></button>
           <button aria-label="제목 수정" title="제목 수정" onClick={()=>{setEditing({kind:'title'});setDraft(selected.title);}}><Pencil size={17}/></button>
           <button aria-label="체크리스트 복제" title="복제" onClick={clone}><Copy size={17}/></button>

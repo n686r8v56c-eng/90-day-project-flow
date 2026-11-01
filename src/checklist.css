@@ -22,3 +22,8 @@
 .cl-helper{font-size:14px}
 .cl-import,.cl-editor textarea{font-size:16px}
 @media(max-width:390px){.cl-detail-head h2{font-size:21px}.cl-actions button{width:36px;height:38px}.cl-card{padding:14px 12px}.cl-item label{font-size:15px}}
+
+/* Archive section */
+.cl-archive-toggle{display:flex;align-items:center;gap:8px;width:100%;margin:16px 0 8px;padding:11px 12px;border:1px solid #ded4ed;border-radius:10px;background:#f7f2fc;color:#745b9b;font-weight:650;font-size:14px;text-align:left;cursor:pointer}
+.cl-archive-toggle svg:last-child{margin-left:auto}
+.cl-archived-row{opacity:.78}
