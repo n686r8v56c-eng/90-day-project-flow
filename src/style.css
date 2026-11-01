@@ -129,3 +129,25 @@ header h1{font-size:20px;line-height:1.25}
 .project-group-title{font-size:16px;font-weight:750;color:#665078;margin:0 0 12px;padding:0 2px;letter-spacing:-.3px}
 .project-group .projectgrid{margin:0}
 @media(max-width:420px){.project-sections{gap:22px}.project-group-title{font-size:15px;margin-bottom:10px}}
+
+/* KPI pinning is independent of home pinning */
+.kpi-card{cursor:default}
+.kpi-card-heading .kpi-open{flex:1;min-width:0;text-align:left;font:inherit;color:inherit;padding:0;background:none;border:0;cursor:pointer}
+.kpi-card-pin{flex:0 0 32px;display:grid;place-items:center;width:32px;height:32px;border:0;border-radius:8px;background:transparent;cursor:pointer}
+.kpi-card-pin:hover{background:#f3edf8}
+.kpi-card-content{display:flex;flex-direction:column;align-items:stretch;text-align:left;width:100%;gap:10px;flex:1;min-width:0;border:0;background:transparent;color:inherit;padding:0;cursor:pointer}
+.kpi-card-content .kpi-count{margin-top:auto}
+
+/* Project app launch link: separate from checklist card tap */
+.projectcard{position:relative}
+.projectcard .card-body{padding-bottom:23px}
+.project-external-link{position:absolute;right:11px;bottom:9px;width:28px;height:28px;display:grid;place-items:center;color:#8c6ab3;background:#f3edf8;border-radius:8px;text-decoration:none;z-index:1}
+.project-external-link:focus-visible{outline:2px solid #8c6ab3;outline-offset:2px}
+
+/* Change tab: shared category/project filters */
+.change-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px 0 20px}
+.change-filters select{min-width:0;width:100%;font-size:15px;padding:12px 10px;background:white;border:1px solid #e3d8ee;border-radius:12px;color:#393043}
+.change-record small{color:#897b9b;font-size:12px}
+.change-record strong{display:block;margin-top:6px}
+.change-record p{white-space:pre-wrap;overflow-wrap:anywhere}
+@media(max-width:390px){.change-filters{gap:8px}.change-filters select{font-size:14px}}
