@@ -35,6 +35,8 @@ export function parseChecklist(input) {
   return {title, groups};
 }
 
+const itemStage = item => item.done ? 2 : (item.status === 'in_progress' || item.status === 1 ? 1 : 0);
+const countStarted = list => (list.groups||[]).flatMap(g=>g.items||[]).filter(x=>itemStage(x)>0).length;
 const countDone = list => (list.groups||[]).flatMap(g=>g.items||[]).filter(x=>x.done).length;
 const countAll = list => (list.groups||[]).reduce((n,g)=>n+(g.items||[]).length,0);
 
@@ -110,7 +112,11 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
   }
   async function toggleItem(groupId,itemId) {
     if(!selected || busy)return;
-    const groups=selected.groups.map(g=>g.id!==groupId?g:{...g,items:g.items.map(x=>x.id!==itemId?x:{...x,done:!x.done,completedAt:!x.done?new Date().toISOString():null})});
+    const groups=selected.groups.map(g=>g.id!==groupId?g:{...g,items:g.items.map(x=>{
+      if(x.id!==itemId)return x;
+      const stage=(itemStage(x)+1)%3;
+      return {...x,status:stage===1?'in_progress':stage===2?'completed':'pending',done:stage===2,completedAt:stage===2?new Date().toISOString():null};
+    })});
     await updateRow(selected,{groups},'체크 상태 저장됨');
   }
   async function editText() {
@@ -143,18 +149,18 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
     if(!selected||busy)return;
     setBusy(true);setError('');
     try{
-      const groups=selected.groups.map(g=>({...g,id:uuid(),items:g.items.map(x=>({...x,id:uuid(),done:false,completedAt:null}))}));
+      const groups=selected.groups.map(g=>({...g,id:uuid(),items:g.items.map(x=>({...x,id:uuid(),done:false,status:'pending',completedAt:null}))}));
       const {data,error}=await client.from('app_checklists').insert({user_id:userId,project_id:projectId,title:selected.title+' 복사',groups,tags:selected.tags||[]}).select().single();
       if(error)throw error;
       setLists(old=>[data,...old]);onChanged?.();setSelectedId(data.id);saved('체크하지 않은 새 복사본을 만들었어.');
     }catch(e){fail(e);}finally{setBusy(false);}
   }
   async function resetChecks(){
-    if (!selected || busy || countDone(selected) === 0) return;
-    if (!window.confirm(`'${selected.title}' 체크리스트의 완료 표시 ${countDone(selected)}개를 모두 해제할까?\n그룹과 항목은 삭제되지 않아.`)) return;
+    if (!selected || busy || countStarted(selected) === 0) return;
+    if (!window.confirm(`'${selected.title}' 체크리스트의 진행·완료 표시 ${countStarted(selected)}개를 모두 해제할까?\n그룹과 항목은 삭제되지 않아.`)) return;
     const groups = (selected.groups || []).map(g => ({
       ...g,
-      items: (g.items || []).map(item => ({...item, done:false}))
+      items: (g.items || []).map(item => ({...item,done:false,status:'pending',completedAt:null}))
     }));
     await updateRow(selected, {groups}, '모든 체크를 해제했어.');
   }
@@ -224,7 +230,7 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
         <div className="cl-detail-toolbar">{selected.archived&&<p className="cl-muted">아카이브 · 홈 집계 제외</p>}
         <div className="cl-actions">
           <button type="button" aria-label={selected.archived?'아카이브에서 복원':'아카이브로 보관'} title={selected.archived?'아카이브에서 복원':'아카이브로 보관'} disabled={busy} onClick={()=>toggleArchive(selected)}>{selected.archived?<ArchiveRestore size={17}/>:<Archive size={17}/>}</button>
-          <button type="button" aria-label="체크 상태 전체 초기화" title="전체 체크 초기화" disabled={busy || countDone(selected)===0} onClick={resetChecks}><RotateCcw size={17}/></button>
+          <button type="button" aria-label="체크 상태 전체 초기화" title="전체 체크 초기화" disabled={busy || countStarted(selected)===0} onClick={resetChecks}><RotateCcw size={17}/></button>
           <button aria-label="제목 수정" title="제목 수정" onClick={()=>{setEditing({kind:'title'});setDraft(selected.title);}}><Pencil size={17}/></button>
           <button aria-label="체크리스트 복제" title="복제" onClick={clone}><Copy size={17}/></button>
           <button aria-label="체크리스트 삭제" title="삭제" onClick={removeList}><Trash2 size={17}/></button>
@@ -242,7 +248,10 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
             <button className="cl-small" aria-label={`${g.title} 이름 수정`} onClick={()=>{setEditing({kind:'group',groupId:g.id});setDraft(g.title);}}><Pencil size={15}/></button>
           </div>
           {!closed&&<><div className="cl-items">{g.items.map(x=><div className="cl-item" key={x.id}>
-            <label className={x.done?'cl-done':''}><input type="checkbox" disabled={busy} checked={!!x.done} onChange={()=>toggleItem(g.id,x.id)}/><span>{x.text}</span></label>
+            <div className={'cl-task-label '+(x.done?'cl-done':'')}>
+              <button type="button" className={'cl-stage-check cl-stage-'+itemStage(x)} disabled={busy} onClick={()=>toggleItem(g.id,x.id)} aria-label={`${x.text}: ${itemStage(x)===0?'미시작':itemStage(x)===1?'진행 중':'완료'} · 누르면 다음 단계`} title={itemStage(x)===0?'미시작 → 진행 중':itemStage(x)===1?'진행 중 → 완료':'완료 → 미시작'}>{itemStage(x)===2?<Check size={15} strokeWidth={3}/>:null}</button>
+              <span>{x.text}</span>
+            </div>
             <button className="cl-small" aria-label={`${x.text} 수정`} onClick={()=>{setEditing({kind:'item',groupId:g.id,itemId:x.id});setDraft(x.text);}}><Pencil size={15}/></button>
             <button className="cl-small" aria-label={`${x.text} 삭제`} onClick={()=>removeItem(g.id,x.id)}><X size={15}/></button>
           </div>)}</div><button className="cl-add" onClick={()=>addItem(g.id)}><Plus size={16}/> 항목 추가</button></>}

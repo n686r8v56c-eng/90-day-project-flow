@@ -62,3 +62,14 @@
 .cl-actions{display:flex;justify-content:flex-end;flex-wrap:nowrap;gap:6px;min-width:0}
 .cl-actions button{flex:0 0 40px;width:40px;height:40px}
 @media(max-width:390px){.cl-detail-title-row h2{font-size:21px}.cl-actions{gap:5px}.cl-actions button{flex-basis:36px;width:36px;height:38px}}
+
+/* Three-stage checklist: empty -> purple square (in progress) -> checked (done). */
+.cl-item .cl-task-label{display:flex;align-items:flex-start;gap:11px;flex:1;min-width:0;font-size:16px;line-height:1.5}
+.cl-item .cl-task-label>span{overflow-wrap:anywhere;flex:1}
+.cl-item .cl-stage-check{appearance:none;display:inline-grid;place-items:center;flex:0 0 22px;width:22px;height:22px;margin:1px 0 0;padding:0;border:2px solid #99939d;border-radius:6px;background:white;color:white;cursor:pointer;transition:background .12s,border-color .12s}
+.cl-item .cl-stage-check.cl-stage-1{background:#9672c5;border-color:#9672c5}
+.cl-item .cl-stage-check.cl-stage-2{background:#9672c5;border-color:#9672c5}
+.cl-item .cl-stage-check:disabled{opacity:.55;cursor:wait}
+.cl-item .cl-stage-check:focus-visible{outline:2px solid #9672c5;outline-offset:3px}
+.cl-item .cl-task-label.cl-done>span{color:#ada4b5;text-decoration:line-through}
+@media(max-width:390px){.cl-item .cl-task-label{font-size:15px}}
