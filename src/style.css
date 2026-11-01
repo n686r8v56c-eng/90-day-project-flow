@@ -197,3 +197,6 @@ header h1{font-size:20px;line-height:1.25}
 .vision-photo img{display:block;width:100%;height:auto;min-height:120px;object-fit:cover}
 .vision-photo button{position:absolute;right:7px;top:7px;display:grid;place-items:center;width:29px;height:29px;border-radius:50%;background:#ffffffed;color:#5d4b6c}
 @media(min-width:700px){.vision-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* Active checklist name appears above the next incomplete item on Home cards. */
+.card-checklist-title{display:flex;align-items:center;gap:5px;width:100%;min-width:0;margin-top:4px;font-size:11px;font-weight:650;color:#6e528e}.card-checklist-title svg{flex-shrink:0}.card-checklist-title span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.card-focus{display:block;width:100%;min-width:0}
