@@ -8,6 +8,7 @@ import TimeBudget,{TimeKpiCard} from './TimeBudget.jsx';
 import TimeAnalysis from './TimeAnalysis.jsx';
 import './AnalysisNav.css';
 import {ChecklistPanel} from './ChecklistPanel.jsx';
+import SecretBoard from './SecretBoard.jsx';
 const url=import.meta.env.VITE_SUPABASE_URL,key=import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase=url&&key?createClient(url,key):null;
 const defaults=[
