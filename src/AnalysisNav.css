@@ -1,0 +1,9 @@
+/* KPI detail tabs and Analysis entry points */
+.kpi-detail-switch{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:#ebe1f4;border-radius:11px;margin:3px 0 16px;max-width:100%}
+.kpi-detail-switch button{padding:10px 8px;border:0;border-radius:8px;background:transparent;color:#7c6b8c;font-size:14px;font-weight:650;cursor:pointer}
+.kpi-detail-switch button.selected{background:white;color:#72539c;box-shadow:0 1px 4px #6f52981a}
+.analysis-entry{position:relative;display:flex;flex-direction:column;text-align:left;align-items:flex-start;min-height:84px;gap:10px;padding:16px;cursor:pointer}
+.analysis-entry small{color:#91829b;font-size:12px;padding-right:20px}
+.analysis-entry svg{position:absolute;right:12px;bottom:14px;color:#a28ab8}
+.analysis-placeholder{border-radius:12px;padding:18px 14px;background:#f7f3fa;color:#786a83;line-height:1.7;font-size:14px}
+.analysis-placeholder h3{margin:0 0 8px;color:#60506e}
