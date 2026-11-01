@@ -173,3 +173,27 @@ header h1{font-size:20px;line-height:1.25}
 .maintcard-external{position:absolute;right:11px;bottom:11px;display:grid;place-items:center;width:29px;height:29px;background:#e7dff0;border-radius:9px;color:#8c6ab3;text-decoration:none}
 .maintcard-external:focus-visible{outline:2px solid #8c6ab3;outline-offset:2px}
 @media(max-width:390px){.maintcard-edit strong{font-size:14px}}
+
+.header-countdown{font-size:13px;font-weight:700;color:#9873c8;margin-left:7px;white-space:nowrap}
+.view-toggle{display:grid;place-items:center;min-width:35px;height:35px;border:1px solid #e4ddec;border-radius:10px;color:#8565ae;background:#fff;cursor:pointer}
+.projectgrid.list-mode{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.projectgrid.list-mode .projectcard{min-height:0}
+.projectgrid.list-mode .card-body{padding-top:2px;padding-bottom:12px}
+.projectgrid.list-mode .kpi-card-content{display:flex;flex-wrap:wrap;gap:10px;padding:8px 12px}
+.projectgrid.list-mode .kpi-preview{flex:1;min-width:110px}
+.vision-card{padding:0;overflow:hidden;text-align:left;cursor:pointer;display:flex;flex-direction:column;width:100%;min-width:0}
+.vision-card-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;padding:13px 12px 10px;font-weight:700}
+.vision-card-heading small{font-size:12px;color:#8c8196;font-weight:400;white-space:nowrap}
+.vision-cover{display:block;width:100%;height:130px;object-fit:cover}
+.vision-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:130px;width:100%;background:#f5f0fa;color:#a18cb7;font-size:12px}
+.vision-grid.list-mode .vision-card{flex-direction:row;align-items:center;min-height:70px}
+.vision-grid.list-mode .vision-card-heading{flex:1}
+.vision-grid.list-mode .vision-cover,.vision-grid.list-mode .vision-placeholder{width:86px;min-width:86px;height:70px;min-height:70px}
+.vision-detail{padding-bottom:30px}
+.vision-upload{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 16px;border-radius:11px;background:#8e6bb7;color:white;font-weight:700;cursor:pointer;margin-bottom:15px}
+.vision-upload input{display:none}
+.vision-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.vision-photo{position:relative;overflow:hidden;border-radius:12px;background:#f4f0f7}
+.vision-photo img{display:block;width:100%;height:auto;min-height:120px;object-fit:cover}
+.vision-photo button{position:absolute;right:7px;top:7px;display:grid;place-items:center;width:29px;height:29px;border-radius:50%;background:#ffffffed;color:#5d4b6c}
+@media(min-width:700px){.vision-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}}
