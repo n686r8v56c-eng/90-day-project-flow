@@ -48,3 +48,17 @@
 .cl-detail-tags{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#8d78a2;font-size:13px;margin:4px 0 9px}
 .cl-detail-tags span{overflow-wrap:anywhere}.cl-detail-tags button{display:flex;gap:5px;align-items:center;color:#8667ac}
 .cl-tag-edit{display:flex;gap:8px;margin-bottom:10px}.cl-tag-edit button{color:#8362ad;font-weight:600}
+
+/* Checklist detail: title on first row, tags and actions on second row */
+.cl-detail-head{display:flex;flex-direction:column;align-items:stretch;gap:9px;min-width:0;margin:22px 0 18px}
+.cl-detail-title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;min-width:0}
+.cl-detail-title-row h2{flex:1;min-width:0;margin:0;font-size:23px;line-height:1.35;overflow-wrap:anywhere;word-break:keep-all}
+.cl-detail-title-row>.cl-muted{flex-shrink:0;padding-top:6px;font-size:13px}
+.cl-detail-tags{margin:0;min-width:0;justify-content:flex-start;gap:10px}
+.cl-detail-tags span{min-width:0;overflow-wrap:anywhere}
+.cl-detail-tags button{flex-shrink:0}
+.cl-detail-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:10px;min-width:0;width:100%}
+.cl-detail-toolbar>.cl-muted{white-space:normal;margin-right:auto}
+.cl-actions{display:flex;justify-content:flex-end;flex-wrap:nowrap;gap:6px;min-width:0}
+.cl-actions button{flex:0 0 40px;width:40px;height:40px}
+@media(max-width:390px){.cl-detail-title-row h2{font-size:21px}.cl-actions{gap:5px}.cl-actions button{flex-basis:36px;width:36px;height:38px}}

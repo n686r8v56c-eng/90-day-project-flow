@@ -218,10 +218,10 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
       <button className="cl-primary" disabled={busy} onClick={createFromText}>체크리스트 생성 및 저장</button>
     </div>}
     {mode==='detail'&&selected&&<>
-      <div className="cl-detail-head"><h2>{selected.title}</h2>
+      <div className="cl-detail-head"><div className="cl-detail-title-row"><h2>{selected.title}</h2><span className="cl-muted">{progress} 완료</span></div>
         <div className="cl-detail-tags"><span>{(selected.tags||[]).map(t=>'#'+t).join(' ')||'태그 없음'}</span><button type="button" onClick={()=>{setTagInput((selected.tags||[]).join(', '));setEditingTags(v=>!v);}}><Pencil size={14}/> 태그</button></div>
         {editingTags&&<div className="cl-tag-edit"><input aria-label="태그 수정" value={tagInput} onChange={e=>setTagInput(e.target.value)} placeholder="태그를 쉼표로 구분"/><button type="button" disabled={busy} onClick={async()=>{if(await updateRow(selected,{tags:normalizeTags(tagInput)},'태그를 저장했어.'))setEditingTags(false);}}>저장</button></div>}
-        <div className="cl-detail-toolbar"><p className="cl-muted">{progress} 완료{selected.archived?' · 아카이브 · 홈 집계 제외':''}</p>
+        <div className="cl-detail-toolbar">{selected.archived&&<p className="cl-muted">아카이브 · 홈 집계 제외</p>}
         <div className="cl-actions">
           <button type="button" aria-label={selected.archived?'아카이브에서 복원':'아카이브로 보관'} title={selected.archived?'아카이브에서 복원':'아카이브로 보관'} disabled={busy} onClick={()=>toggleArchive(selected)}>{selected.archived?<ArchiveRestore size={17}/>:<Archive size={17}/>}</button>
           <button type="button" aria-label="체크 상태 전체 초기화" title="전체 체크 초기화" disabled={busy || countDone(selected)===0} onClick={resetChecks}><RotateCcw size={17}/></button>
