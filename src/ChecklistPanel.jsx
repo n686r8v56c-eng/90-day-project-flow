@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {ArrowLeft, Plus, ClipboardCheck, Copy, Trash2, Pencil, ChevronDown, ChevronRight, Check, X, RotateCcw, Archive, ArchiveRestore} from 'lucide-react';
+import {ArrowLeft, Plus, ClipboardCheck, Copy, Trash2, Pencil, ChevronDown, ChevronRight, Check, X, RotateCcw, Archive, ArchiveRestore, Star} from 'lucide-react';
 import './checklist.css';
 
 const uuid = () => crypto.randomUUID();
@@ -56,7 +56,7 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
 
   const refresh = useCallback(async () => {
     if (!client || !userId) return;
-    const {data,error} = await client.from('app_checklists').select('*').eq('user_id',userId).eq('project_id',projectId).order('created_at',{ascending:false});
+    const {data,error} = await client.from('app_checklists').select('*').eq('user_id',userId).eq('project_id',projectId).order('created_at',{ascending:true});
     if (error) {setError('체크리스트 목록을 불러오지 못했어: '+error.message);return;}
     setLists(data||[]);onChanged?.();
   },[client,userId,projectId]);
@@ -152,6 +152,18 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
       if(next)setShowArchived(false);
     }
   }
+  async function toggleFeatured(row){
+    if(!row||busy||row.archived)return;
+    setBusy(true);setError('');
+    try{
+      const next=!row.featured;
+      // Clear the previous featured checklist for this project first.
+      if(next){const {error:clearError}=await client.from('app_checklists').update({featured:false}).eq('user_id',userId).eq('project_id',projectId).eq('featured',true);if(clearError)throw clearError;}
+      const {error}=await client.from('app_checklists').update({featured:next}).eq('user_id',userId).eq('id',row.id);
+      if(error)throw error;
+      await refresh();saved(next?'홈 표시 체크리스트로 지정했어.':'오래된 체크리스트를 자동 표시해.');
+    }catch(e){fail(e);await refresh();}finally{setBusy(false);}
+  }
   async function removeList(){
     if(!selected||!window.confirm(`'${selected.title}' 체크리스트를 삭제할까?`))return;
     setBusy(true);try{
@@ -170,10 +182,11 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
     {error&&<p className="cl-error" role="alert">{error}</p>}
     {message&&<p className="cl-message" role="status">{message}</p>}
     {mode==='list'&&<>
-      <p className="cl-helper">목록을 선택하면 체크할 수 있어. 새 체크리스트는 글을 붙여넣어서 만들어 줘.</p>
-      <div className="cl-list">{activeLists.map(l=><button className="cl-list-row" key={l.id} onClick={()=>{setSelectedId(l.id);setMode('detail');setMessage('');}}>
-        <span><strong>{l.title}</strong><small>{countDone(l)}/{countAll(l)} 완료</small></span><ChevronRight size={18}/>
-      </button>)}{!activeLists.length&&<p className="cl-empty">진행 중인 체크리스트가 없어. + 추가로 만들어 봐!</p>}</div>
+      <p className="cl-helper">☆을 누르면 해당 체크리스트의 첫 번째 미완료 항목이 홈에 보여. 별표가 없으면 가장 오래된 목록을 사용해.</p>
+      <div className="cl-list">{activeLists.map(l=><div className="cl-list-row cl-featured-row" key={l.id}>
+        <button type="button" className="cl-row-open" onClick={()=>{setSelectedId(l.id);setMode('detail');setMessage('');}}><span><strong>{l.title}</strong><small>{countDone(l)}/{countAll(l)} 완료</small></span><ChevronRight size={18}/></button>
+        <button type="button" className="cl-feature-star" disabled={busy} aria-label={l.featured?'홈 표시 별표 해제':'홈에 이 체크리스트 표시'} title={l.featured?'홈 표시 해제':'홈에 표시'} onClick={()=>toggleFeatured(l)}><Star size={20} fill={l.featured?'#9772c6':'none'} color={l.featured?'#9772c6':'#aaa0b3'}/></button>
+      </div>)}{!activeLists.length&&<p className="cl-empty">진행 중인 체크리스트가 없어. + 추가로 만들어 봐!</p>}</div>
       <button type="button" className="cl-archive-toggle" onClick={()=>setShowArchived(v=>!v)} aria-expanded={showArchived}>
         <Archive size={17}/> 아카이브 ({archivedLists.length}) {showArchived?<ChevronDown size={16}/>:<ChevronRight size={16}/>}
       </button>

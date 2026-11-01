@@ -47,3 +47,26 @@ html{font-size:16px;-webkit-text-size-adjust:100%}body{overflow-x:hidden}button,
  .projectcard .card-actions{gap:1px}
  .projectcard .card-actions button{width:30px;height:32px}
 }
+
+/* Compact, legible home: priority/category metadata hidden in cards */
+header{min-height:76px;padding:16px 16px 12px;gap:10px}
+header h1{font-size:20px;line-height:1.25}
+.eyebrow{font-size:11px;letter-spacing:1px}
+.selector{font-size:13px;min-height:40px;padding:9px 10px;max-width:49%}
+.topline{padding:11px 16px 10px;gap:10px;font-size:13px;line-height:1.4}
+.topline b{font-size:16px}
+.sync-indicator{font-size:11px}
+.topline button{min-width:32px;min-height:32px}
+.progress{height:8px;margin:0 16px;border-radius:9px}
+.sectionhead h2{font-size:18px}.sectionhead p{font-size:12px}
+.projectgrid{gap:11px}
+.projectcard{min-height:0!important;padding:13px 13px 14px!important;gap:7px!important;border-radius:16px}
+.projectcard .card-top{min-height:27px!important}
+.projectcard .emoji{font-size:22px}
+.projectcard .card-actions button{width:29px;height:29px}
+.projectcard .card-body{gap:0!important}
+.projectcard strong{font-size:17px;line-height:1.3;margin:2px 0 12px}
+.projectcard .mini{height:7px;margin:0 0 8px}
+.projectcard .status{font-size:13px;margin:0 0 7px;line-height:1.4}
+.projectcard .card-focus{font-size:13px;line-height:1.4;min-height:18px}
+@media(max-width:390px){header h1{font-size:18px}.eyebrow{font-size:10px}.selector{font-size:12px}.topline{font-size:12px}.projectcard{padding:12px 11px 13px!important}.projectcard strong{font-size:16px}.projectcard .card-focus,.projectcard .status{font-size:12px}}
