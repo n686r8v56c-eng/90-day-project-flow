@@ -163,3 +163,13 @@ header h1{font-size:20px;line-height:1.25}
 .milestone-row strong{font-size:15px;overflow-wrap:anywhere}
 .milestone-row small{font-size:12px;color:#877992;overflow-wrap:anywhere}
 .milestone-row>button:last-child{padding:6px;color:#9a85aa}
+
+/* Maintenance links: click diagonal arrow to launch; click card to edit its URL. */
+.maintcard{position:relative;min-width:0;padding:0;overflow:hidden}
+.maintcard-edit{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:6px;width:100%;min-height:112px;padding:13px 43px 13px 12px}
+.maintcard-edit>span{font-size:23px;color:#8d70ad}
+.maintcard-edit strong{font-size:15px;line-height:1.3}
+.maintcard-edit small{font-size:12px;line-height:1.4;color:#94889e}
+.maintcard-external{position:absolute;right:11px;bottom:11px;display:grid;place-items:center;width:29px;height:29px;background:#e7dff0;border-radius:9px;color:#8c6ab3;text-decoration:none}
+.maintcard-external:focus-visible{outline:2px solid #8c6ab3;outline-offset:2px}
+@media(max-width:390px){.maintcard-edit strong{font-size:14px}}
