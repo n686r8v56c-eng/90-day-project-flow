@@ -245,3 +245,16 @@ header h1{font-size:20px;line-height:1.25}
 .vision-card .vision-star{right:35px}
 .vision-hide{position:absolute;right:5px;top:8px;z-index:2;width:29px;height:30px;display:grid;place-items:center;padding:0;background:transparent;color:#a79cb4;border:0;cursor:pointer}
 .vision-hide:focus-visible{outline:2px solid #9873c8;outline-offset:2px}
+
+/* Vision list cards show starred, non-archived Secret text instead of images. */
+.vision-grid .vision-secret-preview{width:100%;padding:0 13px 15px;min-height:100px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.vision-grid .vision-secret-line{display:flex;align-items:flex-start;gap:7px;border-top:1px solid #f0eaf5;padding-top:9px;min-width:0}
+.vision-grid .vision-secret-marker{flex:0 0 auto;font-size:11px;line-height:1.6;color:#a78bc6}
+.vision-grid .vision-secret-copy{display:block;min-width:0;flex:1;text-align:left}
+.vision-grid .vision-secret-copy>strong{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;font-size:13px;line-height:1.45;font-weight:650;color:#6e528e;overflow-wrap:anywhere}
+.vision-grid .vision-secret-copy>small{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;margin-top:3px;font-size:11px;line-height:1.45;color:#91869d;overflow-wrap:anywhere}
+.vision-grid .vision-secret-empty{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;min-height:90px;text-align:center;font-size:12px;line-height:1.5;color:#a08eaf;background:#f7f3fa;border-radius:10px;padding:12px}
+.vision-grid.list-mode .vision-open{flex-direction:column;align-items:stretch}
+.vision-grid.list-mode .vision-card-heading{min-height:62px;width:100%;padding:12px 54px 6px 14px}
+.vision-grid.list-mode .vision-secret-preview{min-height:0;padding-bottom:12px;gap:4px}
+.vision-grid.list-mode .vision-secret-line{padding-top:5px}
