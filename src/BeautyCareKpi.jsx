@@ -9,6 +9,7 @@ const dayKey=(d=new Date())=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,
 const since7=()=>{const d=new Date();d.setDate(d.getDate()-6);return dayKey(d);};
 const metrics=[
  {id:'face',name:'얼굴 관리율',unit:'%',period:'오늘'},
+ {id:'hair',name:'헤어 관리율',unit:'%',period:'오늘'},
  {id:'input',name:'기록 입력률',unit:'%',period:'오늘'},
  {id:'gym',name:'헬스장 출석',unit:'회',period:'최근 7일'},
  {id:'strength',name:'근력운동',unit:'분',period:'최근 7일'},
@@ -19,15 +20,17 @@ const metrics=[
  {id:'calf',name:'종아리',unit:'cm',period:'최근 측정'}
 ];
 const fmt=n=>Number(n).toLocaleString('ko-KR',{maximumFractionDigits:1});
-const beautyIds=new Set(['face','input']);
+const beautyIds=new Set(['face','hair','input']);
 const bodyIds=new Set(['gym','strength','stretch','massage','waist','thigh','calf']);
 const visibleFor=(all,project)=>all.filter(m=>(project==='body'?bodyIds:beautyIds).has(m.id));
 function valuesFor(data){
  const today=dayKey(),week=since7(),items=(data.items||[]).filter(x=>!x.archived);
  const row=(data.days||[]).find(x=>x.record_date===today);
  const face=items.filter(x=>x.category==='face'&&x.kind==='check');
+ const hair=items.filter(x=>x.category==='hair'&&x.kind==='check');
  const ratings=items.filter(x=>x.kind==='rating'&&(x.category==='face'||x.category==='hair'));
  const faceRate=face.length?Math.round(face.filter(x=>row?.checks?.[x.id]===true).length/face.length*100):null;
+ const hairRate=hair.length?Math.round(hair.filter(x=>row?.checks?.[x.id]===true).length/hair.length*100):null;
  const inputRate=ratings.length?Math.round(ratings.filter(x=>row?.ratings?.[x.id]!=null).length/ratings.length*100):null;
  const weekDays=(data.days||[]).filter(x=>x.record_date>=week&&x.record_date<=today);
  const gymDates=new Set((data.photos||[]).filter(x=>x.category==='gym'&&x.record_date>=week&&x.record_date<=today).map(x=>x.record_date));
@@ -35,6 +38,7 @@ function valuesFor(data){
  const latest=id=>{const r=[...(data.days||[])].sort((a,b)=>b.record_date.localeCompare(a.record_date)).find(x=>x.measurements?.[id]!==null&&x.measurements?.[id]!==undefined&&x.measurements?.[id]!==''&&Number.isFinite(Number(x.measurements[id])));return r?{value:Number(r.measurements[id]),date:r.record_date}:null};
  return metrics.map(m=>{let actual=null,target=null,detail=m.period;
  if(m.id==='face'){actual=faceRate;target=100;}
+ if(m.id==='hair'){actual=hairRate;target=100;}
  if(m.id==='input'){actual=inputRate;target=100;}
  if(m.id==='gym'){actual=gymDates.size;target=null;}
  if(['strength','stretch','massage'].includes(m.id)){actual=minutes(m.id);target=null;}
@@ -78,7 +82,7 @@ export default function BeautyCareKpi({featured=[],onToggleFeatured,project='bea
  const [email,setEmail]=useState(''),[password,setPassword]=useState(''),[busy,setBusy]=useState(false),[authError,setAuthError]=useState('');
  const values=useMemo(()=>records?visibleFor(valuesFor(records),project):[],[records,project]);
  const signIn=async e=>{e.preventDefault();setBusy(true);setAuthError('');const{error}=await beauty.auth.signInWithPassword({email,password});setPassword('');setBusy(false);if(error)setAuthError(error.message);};
- return <section className="beauty-kpi-panel"><div className="beauty-kpi-head"><div><strong>{project==='body'?'Body · 운동과 신체 측정':'Beauty · 얼굴 관리 기록'}</strong><small>{project==='body'?'최근 7일 운동 · 최신 바디 측정':'오늘의 얼굴 관리율 · 기록 입력률'}</small></div>{session&&<button type="button" onClick={refresh} aria-label="새로고침"><RefreshCw size={18}/></button>}</div>
+ return <section className="beauty-kpi-panel"><div className="beauty-kpi-head"><div><strong>{project==='body'?'Body · 운동과 신체 측정':'Beauty · 얼굴 관리 기록'}</strong><small>{project==='body'?'최근 7일 운동 · 최신 바디 측정':'오늘의 얼굴·헤어 관리율 · 기록 입력률'}</small></div>{session&&<button type="button" onClick={refresh} aria-label="새로고침"><RefreshCw size={18}/></button>}</div>
  {!beauty?<p className="beauty-kpi-error">Cloudflare Pages에 VITE_BEAUTY_SUPABASE_URL, VITE_BEAUTY_SUPABASE_ANON_KEY를 설정해 줘.</p>:!session?<form className="beauty-kpi-login" onSubmit={signIn}><p>Beauty Care Flow 계정으로 로그인해 줘.</p><input required type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="Beauty Care 이메일" autoComplete="username"/><input required type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="비밀번호" autoComplete="current-password"/><button type="submit" disabled={busy}><LogIn size={16}/>{busy?'연결 중…':'Beauty Care 연결'}</button></form>:
  <><div className="beauty-kpi-session"><span>Beauty Care 연결됨</span><button type="button" onClick={()=>beauty.auth.signOut()}><LogOut size={15}/> 연결 해제</button></div>{loading?<p>기록을 불러오는 중…</p>:<div className="beauty-kpi-grid">{values.map(m=><div className="beauty-kpi-metric" key={m.id}><div className="beauty-kpi-row"><span>{m.name}</span><button type="button" aria-label={m.name+(featured.includes(m.id)?' 대표 KPI 해제':' 대표 KPI 선택')} aria-pressed={featured.includes(m.id)} title="대표 KPI 최대 2개" onClick={()=>onToggleFeatured?.(m.id)}><Star size={19} fill={featured.includes(m.id)?'#9873c8':'none'} color={featured.includes(m.id)?'#9873c8':'#aaa0b3'}/></button></div><strong>{m.actual==null?'미기록':fmt(m.actual)+' '+m.unit}</strong><small>{m.target!==null?'목표 '+fmt(m.target)+m.unit:m.detail}</small>{m.target!=null&&m.actual!=null&&<div className="beauty-kpi-track"><i style={{width:Math.min(100,m.actual/m.target*100)+'%'}}/></div>}</div>)}</div>}</>}
  {(error||authError)&&<p className="beauty-kpi-error" role="alert">{error||authError}</p>}
