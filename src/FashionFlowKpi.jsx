@@ -40,7 +40,7 @@ export function FashionKpiCard({featured=[]}){
  if(loading&&!stats)return <div className="kpi-empty">Fashion Flow 불러오는 중…</div>;
  if(error)return <div className="kpi-empty">Fashion Flow 조회 오류</div>;
  if(!stats)return <div className="kpi-empty">Fashion Flow 기록 없음</div>;
- const selected=featured.length?featured.slice(0,2):['items','outfits'];
+ const selected=fashionMetrics.map(m=>m.id);
  return <>{selected.map(id=>{const metric=fashionMetrics.find(x=>x.id===id);return metric?<div className="kpi-preview" key={id}><small>{metric.name}</small><strong>{stats[id].toLocaleString('ko-KR')}개</strong><span>Fashion Flow 연동</span></div>:null})}</>;
 }
 export default function FashionFlowKpi({featured=[],onToggleFeatured}){
