@@ -101,7 +101,7 @@ useEffect(()=>{if(!cloudReady||!session)return;refreshLists();const ch=supabase.
 const summaryFor=id=>{const lists=listRows.filter(l=>l.project_id===id&&!l.archived);let total=0,done=0;for(const l of lists)for(const g of (l.groups||[]))for(const item of (g.items||[])){total++;if(item.done)done++;}const sorted=[...lists].sort((a,b)=>String(a.created_at||'').localeCompare(String(b.created_at||''))||String(a.id).localeCompare(String(b.id)));const picked=sorted.find(l=>l.featured)||sorted[0];const focus=picked?(picked.groups||[]).flatMap(g=>g.items||[]).find(x=>!x.done)?.text||'모든 항목 완료 ✓':'';return{total,done,focus,checklistTitle:picked?.title||'',lists:lists.length};};
 // Each tab starts with only the starred section expanded. User toggles are local to this visit.
 useEffect(()=>{if(tab==='home'||tab==='strategy'||tab==='vision')setOpenGroups({});},[tab]);
-const groupDefaultOpen=title=>tab==='home'||title==='⭐ 별표';
+const groupDefaultOpen=title=>tab==='home'||tab==='vision'||title==='⭐ 별표';
 const groupIsOpen=title=>openGroups[tab+'|'+title]??groupDefaultOpen(title);
 const toggleGroup=title=>setOpenGroups(old=>({...old,[tab+'|'+title]:!(old[tab+'|'+title]??groupDefaultOpen(title))}));
 const categoryRows=data.categories?.length?data.categories:defaultProjectGroups.map((g,i)=>({id:'group-'+i,title:g.title,archived:false}));
