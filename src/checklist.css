@@ -73,3 +73,7 @@
 .cl-item .cl-stage-check:focus-visible{outline:2px solid #9672c5;outline-offset:3px}
 .cl-item .cl-task-label.cl-done>span{color:#ada4b5;text-decoration:line-through}
 @media(max-width:390px){.cl-item .cl-task-label{font-size:15px}}
+
+/* Two-level checklist: title and tasks only. */
+.cl-flat-list .cl-items{border-top:0;margin-top:0;padding-top:0}
+.cl-flat-list{margin-top:12px}
