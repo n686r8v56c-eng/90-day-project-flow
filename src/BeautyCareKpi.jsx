@@ -4,7 +4,7 @@ import {Star,RefreshCw,LogOut,LogIn} from 'lucide-react';
 import './BeautyCareKpi.css';
 const url=import.meta.env.VITE_BEAUTY_SUPABASE_URL;
 const key=import.meta.env.VITE_BEAUTY_SUPABASE_ANON_KEY;
-const beauty=url&&key?createClient(url,key,{auth:{storageKey:'90day-beauty-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}}):null;
+export const beauty=url&&key?createClient(url,key,{auth:{storageKey:'90day-beauty-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}}):null;
 const dayKey=(d=new Date())=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
 const since7=()=>{const d=new Date();d.setDate(d.getDate()-6);return dayKey(d);};
 const metrics=[
