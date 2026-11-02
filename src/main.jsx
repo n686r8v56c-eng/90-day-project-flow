@@ -30,11 +30,13 @@ const defaults=[
 {id:'mind',name:'Mind',icon:'🧘',source:'Mind Flow',kind:'linked',kpis:[]},
 {id:'save',name:'Save',icon:'🐷',source:'Save Flow',kind:'linked',kpis:[{name:'저축액',target:1000000,unit:'원'}]},
 {id:'spend',name:'Spend',icon:'🧾',source:'Spend Flow',kind:'linked',kpis:[{name:'예산 잔액 확보',target:900000,unit:'원'},{name:'무지출 데이',target:30,unit:'일'},{name:'계획 소비율',target:80,unit:'%'},{name:'줄이기 소비 감소',target:20,unit:'%'}]},
-{id:'income',name:'Income',icon:'💰',source:'Income Flow',kind:'linked',kpis:[{name:'월 총매출',target:3000000,unit:'원'}]}
+{id:'income',name:'Income',icon:'💰',source:'Income Flow',kind:'linked',kpis:[{name:'월 총매출',target:3000000,unit:'원'}]},
+{id:'fashion',name:'Fashion',icon:'👗',source:'Fashion Flow',kind:'linked',kpis:[]},
+{id:'cosmetic',name:'Cosmetic',icon:'💄',source:'Cosmetic Flow',kind:'linked',kpis:[]}
 ];
 const registryAppUrls={"beauty":"https://style-flow.pages.dev/","fitness":"https://home-fit-11n.pages.dev/","care":"https://care-log-aqs.pages.dev/","mind":"https://mind-flow-4r3.pages.dev/","spend":"https://spend-flow.pages.dev/","save":"https://saving-flow.pages.dev/","income":"https://income-flow.pages.dev/","time":"https://focus-flow-3f0.pages.dev/","memorylab":"https://memory-lab.pages.dev/","marriage":"https://marriage-flow.pages.dev/"};
 const projectColor=id=>({spend:'#9570B9',save:'#C68BA9',income:'#C69B63',time:'#7E94B8',beauty:'#D68EAB',fitness:'#6FA89B',care:'#BD9BCE',mind:'#8F9DC6',license:'#8570C1',memorylab:'#7898C1',sing:'#D09C7B',dance:'#C78DA3',social:'#8DB4A2',marriage:'#B789BD'}[id]||'#9879BA');
-const defaultProjectGroups=[{title:'재정과 시간',ids:['spend','save','income','time']},{title:'미모개선',ids:['beauty','fitness','care']},{title:'공부',ids:['license','memorylab','mind']},{title:'놀줄알자',ids:['sing','dance']},{title:'우리 만나요',ids:['social','marriage']}];
+const defaultProjectGroups=[{id:'group-0',title:'재정과 시간',ids:['spend','save','income','time']},{id:'group-1',title:'미모개선',ids:['beauty','fitness','care']},{id:'group-2',title:'공부',ids:['license','memorylab','mind']},{id:'group-5',title:'스타일',ids:['fashion','cosmetic']},{id:'group-3',title:'놀줄알자',ids:['sing','dance']},{id:'group-4',title:'우리 만나요',ids:['social','marriage']}];
 const maintenance=[{name:'iCare',desc:'일상 케어',icon:'♡'},{name:'Focus Flow',desc:'집중·할 일',icon:'◷'},{name:'Mind Flow',desc:'호흡·명상',icon:'✿'},{name:'Playlist',desc:'음악·감상',icon:'♫'},{name:'Write Flow',desc:'글쓰기',icon:'✎'},{name:'Lumi notes',desc:'노트',icon:'✧'}];
 const maintenanceDefaultUrls={"iCare":"https://care-log-aqs.pages.dev/","Focus Flow":"https://focus-flow-3f0.pages.dev/","Mind Flow":"https://mind-flow-4r3.pages.dev/","Playlist":"https://playlist-flow.pages.dev/","Write Flow":"https://write-flow.pages.dev/","Lumi notes":"https://tranquil-heliotrope-30be64.netlify.app"};
 const tabs=[['home','홈',BarChart3],['vision','비전',Sparkles],['strategy','전술',House],['calendar','일정',CalendarDays],['change','변화',TrendingUp]];
@@ -104,11 +106,12 @@ useEffect(()=>{if(tab==='home'||tab==='strategy'||tab==='vision')setOpenGroups({
 const groupDefaultOpen=title=>tab==='home'||tab==='vision'||title==='⭐ 별표';
 const groupIsOpen=title=>openGroups[tab+'|'+title]??groupDefaultOpen(title);
 const toggleGroup=title=>setOpenGroups(old=>({...old,[tab+'|'+title]:!(old[tab+'|'+title]??groupDefaultOpen(title))}));
-const categoryRows=data.categories?.length?data.categories:defaultProjectGroups.map((g,i)=>({id:'group-'+i,title:g.title,archived:false}));
-const groupIdFor=p=>{if(p.id==='mind')return 'group-2';if(p.categoryId)return p.categoryId;const i=defaultProjectGroups.findIndex(g=>g.ids.includes(p.id));return i<0?'':('group-'+i)};
+const baseCategoryRows=data.categories?.length?data.categories:defaultProjectGroups.map(g=>({id:g.id,title:g.title,archived:false}));
+const categoryRows=baseCategoryRows.some(c=>c.id==='group-5'||c.title==='스타일')?baseCategoryRows:(()=>{const rows=[...baseCategoryRows];const study=rows.findIndex(c=>c.id==='group-2'||c.title==='공부');rows.splice(study>=0?study+1:rows.length,0,{id:'group-5',title:'스타일',archived:false});return rows})();
+const groupIdFor=p=>{if(p.id==='mind')return 'group-2';if(p.id==='fashion'||p.id==='cosmetic')return categoryRows.find(c=>c.id==='group-5'||c.title==='스타일')?.id||'group-5';if(p.categoryId)return p.categoryId;return defaultProjectGroups.find(g=>g.ids.includes(p.id))?.id||''};
 const groupIds=new Set(categoryRows.filter(c=>!c.archived).map(c=>c.id));
 const projectGroups=categoryRows.filter(c=>!c.archived).map(c=>({id:c.id,title:c.title,ids:data.projects.filter(p=>!p.archived&&groupIdFor(p)===c.id).map(p=>p.id)}));
-const persistCategories=fn=>update(d=>({...d,categories:fn(d.categories?.length?d.categories:defaultProjectGroups.map((g,i)=>({id:'group-'+i,title:g.title,archived:false})))}));
+const persistCategories=fn=>update(d=>({...d,categories:fn(categoryRows)}));
 const createCategory=()=>{const title=String(draft.title||'').trim();if(!title)return;persistCategories(rows=>[...rows,{id:crypto.randomUUID(),title,archived:false}]);close()};
 const createProject=()=>{const name=String(draft.name||'').trim();if(!name||!draft.categoryId)return;const id=crypto.randomUUID();update(d=>({...d,projects:[...d.projects,{id,name,icon:draft.icon?.trim()||'📌',categoryId:draft.categoryId,source:'직접 관리',kind:'internal',kpis:[]}],links:{...d.links,[id]:draft.url||''}}));close()};
 const hiddenIds=mode=>Array.isArray(data.hiddenCards?.[mode])?data.hiddenCards[mode]:[];
