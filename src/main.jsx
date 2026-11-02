@@ -4,7 +4,7 @@ import{createClient}from'@supabase/supabase-js';
 import{House,Target,CalendarDays,TrendingUp,ChartColumn,BarChart3,ChevronDown,Plus,X,Check,Settings,ExternalLink,LogOut,Heart,BookOpen,Dumbbell,Wallet,Music2,Mic2,Users,Sparkles,PiggyBank,ClipboardList,Clock,ArrowLeft,ArrowRight,Trash2,Edit3,Link2,Star,MoreHorizontal,LayoutGrid,List,ImagePlus}from'lucide-react';
 import './style.css';
 import SpendFlowKpi,{SpendKpiCard} from './SpendFlowKpi.jsx';
-import MindFlowKpi from './MindFlowKpi.jsx';
+import MindFlowKpi,{MindKpiCard} from './MindFlowKpi.jsx';
 import TimeBudget,{TimeKpiCard} from './TimeBudget.jsx';
 import TimeAnalysis from './TimeAnalysis.jsx';
 import './AnalysisNav.css';
