@@ -6,7 +6,7 @@ import './SpendFlowKpi.css';
 // Public Supabase URL and publishable/anon key only. Never use a service-role key in a browser.
 const url=import.meta.env.VITE_SPEND_SUPABASE_URL;
 const key=import.meta.env.VITE_SPEND_SUPABASE_ANON_KEY;
-const spend=url&&key?createClient(url,key,{auth:{storageKey:'ninety-day-spend-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}}):null;
+export const spend=url&&key?createClient(url,key,{auth:{storageKey:'ninety-day-spend-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}}):null;
 const day=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(Date.UTC(y,m-1,d));};
 const iso=d=>d.toISOString().slice(0,10);
 const add=(s,n)=>{const d=day(s);d.setUTCDate(d.getUTCDate()+n);return iso(d);};
