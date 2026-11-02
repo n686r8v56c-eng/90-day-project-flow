@@ -4,7 +4,7 @@ import {createClient} from '@supabase/supabase-js';
 // Focus Flow uses a separate Supabase project. This is its PUBLIC publishable key,
 // never a service-role key. Each user signs in to Focus Flow in this app once;
 // the Focus Flow RLS and authenticated RPC enforce ownership of the records.
-const focusClient=createClient(
+export const focusClient=createClient(
   'https://cntwtmaqyjwtnpybjare.supabase.co',
   'sb_publishable_8tjs1LsNSb2Ro0Hlw7Ka0A_-a60Ak8U',
   {auth:{storageKey:'90day-focus-flow-auth-v1',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}}
