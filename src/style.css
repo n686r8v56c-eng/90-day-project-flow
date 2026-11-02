@@ -231,3 +231,17 @@ header h1{font-size:20px;line-height:1.25}
 .vision-subtabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:#eee8f5;border-radius:12px;margin:1px 0 17px}
 .vision-subtabs button{min-width:0;padding:10px 8px;border:0;border-radius:9px;background:transparent;color:#826b97;font-size:15px;font-weight:650}
 .vision-subtabs button.active{background:white;color:#7653a2;box-shadow:0 1px 3px #34214412}
+
+/* Non-destructive per-tab card visibility: restored cards retain their data. */
+.hidden-card-tools{display:flex;justify-content:flex-end;margin:0 0 10px}
+.hidden-card-toggle{display:inline-flex;gap:5px;align-items:center;justify-content:center;color:#80629f;background:#f0e9f8;border-radius:9px;font-size:12px;font-weight:600;padding:7px 10px;min-height:32px}
+.hidden-card-list{display:flex;flex-direction:column;gap:5px;background:#fff;border:1px solid #e8dff1;border-radius:12px;padding:9px;margin-bottom:16px}
+.hidden-card-list>p{font-size:12px;color:#988ba8;margin:5px 2px}
+.hidden-card-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 3px;font-size:13px}
+.hidden-card-row>span{min-width:0;overflow-wrap:anywhere}
+.hidden-card-row>button{display:inline-flex;gap:4px;align-items:center;flex:0 0 auto;color:#7957a1;border-radius:8px;background:#f4eff9;padding:8px 10px;font-size:12px}
+.projectcard .card-actions{gap:2px}
+.projectcard .card-actions>button{min-width:27px;min-height:31px;padding:4px}
+.vision-card .vision-star{right:35px}
+.vision-hide{position:absolute;right:5px;top:8px;z-index:2;width:29px;height:30px;display:grid;place-items:center;padding:0;background:transparent;color:#a79cb4;border:0;cursor:pointer}
+.vision-hide:focus-visible{outline:2px solid #9873c8;outline-offset:2px}
