@@ -6,7 +6,7 @@ import './DanceFlowKpi.css';
 // Dance Flow's public browser credentials; deploy-specific VITE_DANCE_* vars take precedence.
 const danceUrl=import.meta.env.VITE_DANCE_SUPABASE_URL||"https://cmaexvxrvufzhbuikiqj.supabase.co";
 const danceKey=import.meta.env.VITE_DANCE_SUPABASE_ANON_KEY||"sb_publishable_iGV_fpBj1aIAdQdmA3V1WQ_g2j46S80";
-const dance=danceUrl&&danceKey?createClient(danceUrl,danceKey,{auth:{storageKey:'90day-dance-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}}):null;
+export const dance=danceUrl&&danceKey?createClient(danceUrl,danceKey,{auth:{storageKey:'90day-dance-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}}):null;
 const specs=[{id:'registered',label:'등록 동작'},{id:'learned',label:'습득 동작'},{id:'completed',label:'완성 안무'}];
 const asList=value=>Array.isArray(value)?value:[];
 export function countDanceKpis(payload,genre='all'){
