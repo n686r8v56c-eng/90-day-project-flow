@@ -130,7 +130,7 @@ const addLog=()=>{if(!draft.title?.trim()||!data.projects.some(p=>p.id===draft.p
 const spendFeatured=data.spendFeatured||[];
 const mindFeatured=data.mindFeatured||[];
 const careFeatured=data.careFeatured||[];
-const beautyFeatured=(data.beautyFeatured||[]).filter(id=>id==='face'||id==='input');
+const beautyFeatured=(data.beautyFeatured||[]).filter(id=>id==='face'||id==='hair'||id==='input');
 const bodyFeatured=(data.bodyFeatured??(data.beautyFeatured||[]).filter(id=>!['face','input'].includes(id))).filter(id=>['gym','strength','stretch','massage','waist','thigh','calf'].includes(id));
 const toggleBodyFeatured=id=>update(d=>{const old=d.bodyFeatured??(d.beautyFeatured||[]).filter(x=>!['face','input'].includes(x));return {...d,bodyFeatured:old.includes(id)?old.filter(x=>x!==id):[...old.slice(-1),id]}});
 const toggleBeautyFeatured=id=>update(d=>{const old=Array.isArray(d.beautyFeatured)?d.beautyFeatured:[];return {...d,beautyFeatured:old.includes(id)?old.filter(x=>x!==id):[...old.slice(-1),id]}});
