@@ -1,8 +1,8 @@
 import React,{useEffect,useMemo,useState} from 'react';
 import {createClient} from '@supabase/supabase-js';
 import {RefreshCw,LogIn,LogOut} from 'lucide-react';
-const url=import.meta.env.VITE_MIND_SUPABASE_URL;
-const key=import.meta.env.VITE_MIND_SUPABASE_ANON_KEY;
+const url=import.meta.env.VITE_MIND_SUPABASE_URL || 'https://nywmfapcjqlvjhrdbrrc.supabase.co';
+const key=import.meta.env.VITE_MIND_SUPABASE_ANON_KEY || 'sb_publishable_Tzx05-pZTox6Kwpg-PktMA_-qz_g2MY';
 const mind=url&&key?createClient(url,key,{auth:{storageKey:'ninety-day-mind-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}}):null;
 const today=()=>new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Seoul'});
 const calc=(rows,date)=>{
