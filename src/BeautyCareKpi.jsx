@@ -19,6 +19,9 @@ const metrics=[
  {id:'calf',name:'종아리',unit:'cm',period:'최근 측정'}
 ];
 const fmt=n=>Number(n).toLocaleString('ko-KR',{maximumFractionDigits:1});
+const beautyIds=new Set(['face','input']);
+const bodyIds=new Set(['gym','strength','stretch','massage','waist','thigh','calf']);
+const visibleFor=(all,project)=>all.filter(m=>(project==='body'?bodyIds:beautyIds).has(m.id));
 function valuesFor(data){
  const today=dayKey(),week=since7(),items=(data.items||[]).filter(x=>!x.archived);
  const row=(data.days||[]).find(x=>x.record_date===today);
@@ -60,9 +63,9 @@ function useBeauty(){
  },[refresh]);
  return {session,records,loading,error,refresh:()=>refresh(session)};
 }
-export function BeautyCareKpiCard({featured=[]}){
+export function BeautyCareKpiCard({featured=[],project='beauty'}){
  const {session,records,loading,error}=useBeauty();
- const values=useMemo(()=>records?valuesFor(records):[],[records]);
+ const values=useMemo(()=>records?visibleFor(valuesFor(records),project):[],[records,project]);
  if(!featured.length)return <div className="kpi-empty">대표 KPI ☆ 선택하기</div>;
  if(!beauty)return <div className="kpi-empty">Beauty Care 연결 설정 필요</div>;
  if(!session)return <div className="kpi-empty">Beauty Care 계정 연결하기</div>;
@@ -70,12 +73,12 @@ export function BeautyCareKpiCard({featured=[]}){
  if(error)return <div className="kpi-empty">Beauty Care 조회 오류</div>;
  return <>{featured.map(id=>values.find(v=>v.id===id)).filter(Boolean).slice(0,2).map(m=><div className="kpi-preview" key={m.id}><small>{m.name} · {m.period}</small><strong>{m.actual==null?'미기록':fmt(m.actual)+' '+m.unit}</strong><span>{m.target!==null?'목표 '+m.target+m.unit:m.detail}</span></div>)}</>;
 }
-export default function BeautyCareKpi({featured=[],onToggleFeatured}){
+export default function BeautyCareKpi({featured=[],onToggleFeatured,project='beauty'}){
  const {session,records,loading,error,refresh}=useBeauty();
  const [email,setEmail]=useState(''),[password,setPassword]=useState(''),[busy,setBusy]=useState(false),[authError,setAuthError]=useState('');
- const values=useMemo(()=>records?valuesFor(records):[],[records]);
+ const values=useMemo(()=>records?visibleFor(valuesFor(records),project):[],[records,project]);
  const signIn=async e=>{e.preventDefault();setBusy(true);setAuthError('');const{error}=await beauty.auth.signInWithPassword({email,password});setPassword('');setBusy(false);if(error)setAuthError(error.message);};
- return <section className="beauty-kpi-panel"><div className="beauty-kpi-head"><div><strong>Beauty Care · 실제 관리 기록</strong><small>오늘의 관리율 · 최근 7일 운동 · 최신 바디 측정</small></div>{session&&<button type="button" onClick={refresh} aria-label="새로고침"><RefreshCw size={18}/></button>}</div>
+ return <section className="beauty-kpi-panel"><div className="beauty-kpi-head"><div><strong>{project==='body'?'Body · 운동과 신체 측정':'Beauty · 얼굴 관리 기록'}</strong><small>{project==='body'?'최근 7일 운동 · 최신 바디 측정':'오늘의 얼굴 관리율 · 기록 입력률'}</small></div>{session&&<button type="button" onClick={refresh} aria-label="새로고침"><RefreshCw size={18}/></button>}</div>
  {!beauty?<p className="beauty-kpi-error">Cloudflare Pages에 VITE_BEAUTY_SUPABASE_URL, VITE_BEAUTY_SUPABASE_ANON_KEY를 설정해 줘.</p>:!session?<form className="beauty-kpi-login" onSubmit={signIn}><p>Beauty Care Flow 계정으로 로그인해 줘.</p><input required type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="Beauty Care 이메일" autoComplete="username"/><input required type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="비밀번호" autoComplete="current-password"/><button type="submit" disabled={busy}><LogIn size={16}/>{busy?'연결 중…':'Beauty Care 연결'}</button></form>:
  <><div className="beauty-kpi-session"><span>Beauty Care 연결됨</span><button type="button" onClick={()=>beauty.auth.signOut()}><LogOut size={15}/> 연결 해제</button></div>{loading?<p>기록을 불러오는 중…</p>:<div className="beauty-kpi-grid">{values.map(m=><div className="beauty-kpi-metric" key={m.id}><div className="beauty-kpi-row"><span>{m.name}</span><button type="button" aria-label={m.name+(featured.includes(m.id)?' 대표 KPI 해제':' 대표 KPI 선택')} aria-pressed={featured.includes(m.id)} title="대표 KPI 최대 2개" onClick={()=>onToggleFeatured?.(m.id)}><Star size={19} fill={featured.includes(m.id)?'#9873c8':'none'} color={featured.includes(m.id)?'#9873c8':'#aaa0b3'}/></button></div><strong>{m.actual==null?'미기록':fmt(m.actual)+' '+m.unit}</strong><small>{m.target!==null?'목표 '+fmt(m.target)+m.unit:m.detail}</small>{m.target!=null&&m.actual!=null&&<div className="beauty-kpi-track"><i style={{width:Math.min(100,m.actual/m.target*100)+'%'}}/></div>}</div>)}</div>}</>}
  {(error||authError)&&<p className="beauty-kpi-error" role="alert">{error||authError}</p>}
