@@ -116,7 +116,7 @@ const removeMilestone=id=>{if(!window.confirm('마일스톤을 삭제할까?'))r
 const addLog=()=>{if(!draft.title?.trim()||!data.projects.some(p=>p.id===draft.project))return;update(d=>({...d,logs:[...d.logs,{id:crypto.randomUUID(),project:draft.project,title:draft.title.trim(),date:today(),value:0,kpi:'',notes:draft.notes||''}]}));close()};
 const spendFeatured=data.spendFeatured||[];
 const mindFeatured=data.mindFeatured||[];
-const toggleMindFeatured=name=>update(d=>{const before=d.mindFeatured||[];return {...d,mindFeatured:before.includes(name)?before.filter(x=>x!==name):before.length<2?[...before,name]:[before[1],name]};});
+const toggleMindFeatured=name=>{update(d=>{const before=Array.isArray(d.mindFeatured)?d.mindFeatured:[];const next=before.includes(name)?before.filter(x=>x!==name):[...before.filter(x=>x!==name).slice(-1),name];return {...d,mindFeatured:next};});};
 const toggleSpendFeatured=key=>update(d=>{const prev=d.spendFeatured||[];return {...d,spendFeatured:prev.includes(key)?prev.filter(x=>x!==key):prev.length<2?[...prev,key]:[prev[1],key]}});
 const kpiConfig=data.kpiConfig||{};
 const linkedKpis=p=>p.kpis.filter(k=>(kpiConfig[p.id]?.visible||[]).includes(k.name));
