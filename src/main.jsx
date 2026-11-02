@@ -193,7 +193,7 @@ return <div className={"app"+(checklistProject?" checklist-open":"")}><header><d
   </div>
   <button type="button" className="vision-card-body" onClick={()=>{setVisionProject(p.id);setVisionSubtab('secrets');setVisionError('')}} aria-label={p.name+' 시크릿 열기'}>
     <strong className="vision-project-name">{p.name}</strong>
-    <span className="vision-secret-count">별표한 시크릿 {favoriteSecrets.length}개</span>
+    
     <div className="vision-secret-preview">
       {favoriteSecrets.length?favoriteSecrets.map(x=><div className="vision-secret-line" key={x.id}><span className="vision-secret-marker" aria-hidden="true">✦</span><span className="vision-secret-copy"><strong>{x.title||x.body||'제목 없음'}</strong>{x.title&&x.body&&<small>{x.body}</small>}</span></div>):<div className="vision-secret-empty">별표한 시크릿이 없어요</div>}
     </div>
