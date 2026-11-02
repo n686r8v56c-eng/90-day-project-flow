@@ -13,6 +13,7 @@ export default function VisionRoadmap({start,value,onChange,projectName}){
  const [expanded,setExpanded]=useState(false);
  const rows=Array.isArray(value)?value:[];
  const items=useMemo(()=>rows.filter(x=>x&&x.title).sort((a,b)=>(a.from||1)-(b.from||1)),[rows]);
+ const chartRows=items.length?items:[{id:'sample-research',title:'자료 조사 (예시)',from:1,to:3,kind:'focus',sample:true},{id:'sample-practice',title:'집중 실행 (예시)',from:4,to:8,kind:'focus',sample:true},{id:'sample-result',title:'첫 결과 (예시)',from:9,to:9,kind:'milestone',sample:true}];
  const active=items.filter(x=>clamp(x.from||1,1,13)<=week&&clamp(x.to||x.from||1,1,13)>=week);
  const current=items.filter(x=>x.done).length;
  const openAdd=(kind=type)=>{setType(kind);setDraft({title:'',notes:'',from:week,to:week,kind});setEditing('new');setExpanded(true)};
@@ -32,13 +33,13 @@ export default function VisionRoadmap({start,value,onChange,projectName}){
    <div className="vr-grid" style={{gridTemplateColumns:'96px repeat(13,58px)'}}>
     <div className="vr-cell vr-header vr-label">계획 / 주차</div>
     {Array.from({length:WEEKS},(_,i)=>i+1).map(w=><button type="button" key={w} className={'vr-cell vr-header vr-week '+(week===w?'selected':'')} onClick={()=>setWeek(w)}><strong>W{w}</strong><small>{weekStart(start,w)}</small></button>)}
-    {items.map(x=><React.Fragment key={x.id}>
-      <button type="button" className={'vr-cell vr-rowtitle '+(x.done?'done':'')} onClick={()=>openEdit(x)} title={x.title}>{x.kind==='milestone'?'◆ ':'▰ '}{x.title}</button>
+    {chartRows.map(x=><React.Fragment key={x.id}>
+      <button type="button" className={'vr-cell vr-rowtitle '+(x.done?'done':'')} onClick={()=>x.sample?openAdd(x.kind):openEdit(x)} title={x.title}>{x.kind==='milestone'?'◆ ':'▰ '}{x.title}</button>
       {Array.from({length:WEEKS},(_,i)=>i+1).map(w=><button type="button" className={'vr-cell vr-slot '+(week===w?'highlight':'')} key={w} onClick={()=>setWeek(w)} aria-label={x.title+' '+w+'주차'}>{w>=x.from&&w<=x.to&&<span className={'vr-bar '+(x.done?'complete':'')+(x.kind==='milestone'?' marker':'')}/>}</button>)}
     </React.Fragment>)}
    </div>
   </div>
-  {!items.length&&<p className="vr-empty">아직 계획이 없어. 이번 주 집중 목표부터 하나 만들어 봐!</p>}
+  {!items.length&&<p className="vr-empty">위 막대는 사용 예시야. 실제 계획은 아직 저장되지 않았어. + 집중 목표를 눌러 시작해 봐!</p>}
   <div className="vr-week-panel">
    <div className="vr-week-title"><button type="button" aria-label="이전 주" onClick={()=>setWeek(w=>Math.max(1,w-1))} disabled={week===1}><ChevronLeft size={18}/></button><strong>W{week} · {weekStart(start,week)} 시작</strong><button type="button" aria-label="다음 주" onClick={()=>setWeek(w=>Math.min(13,w+1))} disabled={week===13}><ChevronRight size={18}/></button></div>
    {active.length?active.map(x=><div className="vr-current" key={x.id}><button type="button" className={'vr-check '+(x.done?'checked':'')} onClick={()=>toggle(x)} aria-label={x.done?'완료 해제':'완료'}>{x.done&&<Check size={14}/>}</button><button type="button" className="vr-current-text" onClick={()=>openEdit(x)}><strong className={x.done?'done':''}>{x.kind==='milestone'?'◆ ':''}{x.title}</strong>{x.notes&&<small>{x.notes}</small>}</button><button type="button" className="vr-edit" aria-label="수정" onClick={()=>openEdit(x)}><Pencil size={15}/></button></div>):<p className="vr-empty">이번 주에 배정된 계획이 없어.</p>}
