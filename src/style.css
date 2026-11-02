@@ -278,3 +278,14 @@ header h1{font-size:20px;line-height:1.25}
 .vision-grid.list-mode .vision-card-body{flex-direction:column;align-items:stretch}
 .vision-grid.list-mode .vision-secret-preview{padding:0;min-height:0}
 @media(max-width:390px){.vision-grid .vision-card{padding:11px;gap:7px}.vision-grid .vision-project-name{font-size:16px}.vision-grid .vision-card-top .card-actions button{width:28px}}
+
+/* Category and project management. Compact controls, consistent with Focus Flow. */
+.category-toolbar{display:flex;align-items:center;justify-content:flex-start;gap:7px;flex-wrap:wrap;margin:0 0 10px}
+.category-toolbar button,.category-project-add button{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:7px 10px;border:1px solid #e5dcef;background:#fff;border-radius:9px;color:#8061a5;font-size:12px;font-weight:650;min-height:30px}
+.category-project-add{display:flex;justify-content:flex-end;margin:0 0 7px}
+.category-project-add button{background:#f0e9f8;border-color:transparent}
+.category-manage-list{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.category-manage-row{display:flex;align-items:center;gap:6px;min-width:0}
+.category-manage-row input{flex:1;min-width:0;width:100%;font-size:16px;padding:9px 10px;border:1px solid #e7ddef;border-radius:9px;background:white}
+.category-manage-row button{flex:none;display:inline-flex;justify-content:center;align-items:center;min-height:36px;padding:6px 9px;border-radius:8px;background:#f0e9f8;color:#7c5a9e;font-size:12px}
+@media(max-width:390px){.category-toolbar button{font-size:11px;padding:6px 8px}.category-manage-row{gap:4px}.category-manage-row button{padding:6px}}
