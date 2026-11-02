@@ -3,7 +3,7 @@ import {createClient} from '@supabase/supabase-js';
 import {RefreshCw,LogIn,LogOut,Star} from 'lucide-react';
 const url=import.meta.env.VITE_MIND_SUPABASE_URL || 'https://nywmfapcjqlvjhrdbrrc.supabase.co';
 const key=import.meta.env.VITE_MIND_SUPABASE_ANON_KEY || 'sb_publishable_Tzx05-pZTox6Kwpg-PktMA_-qz_g2MY';
-const mind=url&&key?createClient(url,key,{auth:{storageKey:'ninety-day-mind-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}}):null;
+export const mind=url&&key?createClient(url,key,{auth:{storageKey:'ninety-day-mind-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}}):null;
 const today=()=>new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Seoul'});
 const calc=(rows,date)=>{
  const sessions=(rows||[]).filter(x=>x.kind==='session'&&!x.deleted).map(x=>x.payload||{}).filter(x=>x.date===date);
