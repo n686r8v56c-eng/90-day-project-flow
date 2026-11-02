@@ -294,3 +294,16 @@ header h1{font-size:20px;line-height:1.25}
 .vision-grid .vision-secret-line{border-top:0;padding-top:0}
 .vision-grid.list-mode .vision-secret-line{border-top:0;padding-top:0}
 .vision-grid .vision-secret-preview{padding-top:0}
+
+/* Home: three equally sized controls on one row; compact category add buttons. */
+.category-toolbar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;width:100%;margin:0 0 12px;align-items:stretch}
+.category-toolbar>button,.category-toolbar .hidden-card-toggle{display:flex;align-items:center;justify-content:center;gap:4px;min-width:0;width:100%;min-height:35px;height:35px;padding:5px 4px;margin:0;border:1px solid #e5dcef;border-radius:9px;background:#fff;color:#8061a5;font-size:11px;font-weight:650;white-space:nowrap;letter-spacing:-.3px}
+.category-toolbar .hidden-card-tools{display:block;min-width:0;width:100%;margin:0}
+.category-toolbar svg{width:14px;height:14px;flex:0 0 14px}
+.category-heading{display:flex;align-items:center;gap:2px;min-width:0;width:100%;padding:6px 0}
+.category-heading .category-heading-toggle{flex:0 1 auto;min-width:0;display:flex;align-items:center;padding:5px 2px 5px 0;background:transparent;border:0;color:inherit;text-align:left;font:inherit;font-weight:inherit;cursor:pointer}
+.category-heading .category-heading-toggle>span{min-width:0;overflow-wrap:anywhere}
+.category-heading .category-heading-plus{display:grid;place-items:center;flex:0 0 28px;width:28px;height:28px;padding:0;margin-left:2px;border:0;border-radius:8px;background:transparent;color:#9475ba;cursor:pointer}
+.category-heading .category-heading-chevron{display:grid;place-items:center;flex:0 0 30px;margin-left:auto;width:30px;height:30px;padding:0;background:transparent;border:0;color:inherit;cursor:pointer}
+.category-heading .category-heading-plus:focus-visible,.category-heading button:focus-visible{outline:2px solid #9672c5;outline-offset:1px}
+@media(max-width:370px){.category-toolbar{gap:4px}.category-toolbar>button,.category-toolbar .hidden-card-toggle{font-size:10px;letter-spacing:-.5px;padding:5px 2px}}
