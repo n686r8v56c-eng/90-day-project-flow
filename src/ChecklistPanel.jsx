@@ -4,35 +4,21 @@ import './checklist.css';
 
 const uuid = () => crypto.randomUUID();
 const clean = v => String(v ?? '').trim();
-const starterText = `새 체크리스트
-준비
-- 첫 번째 할 일
-실행
-- 두 번째 할 일`;
-// Lines prefixed by -, ㅁ, ☐, □ or task-markdown are checklist items,
-// independent of indentation. All other lines after the title are groups.
+const starterText = `새 체크리스트\n- 첫 번째 할 일\n- 두 번째 할 일`;
+// Only title and dash-prefixed tasks. A single internal group preserves schema compatibility.
 export function parseChecklist(input) {
-  const lines = String(input || '').replace(/\r\n?/g, '\n').split('\n').map(s => s.trim()).filter(Boolean);
-  if (!lines.length) throw Error('제목과 체크 항목을 입력해 줘.');
-  const title = lines[0].replace(/^#+\s*/, '').trim();
-  if (!title) throw Error('첫 줄에 제목을 입력해 줘.');
-  let groups = [], current = null, total = 0;
-  const itemRe = /^(?:[-*•]\s*(?:\[[ xX]\]\s*)?|[ㅁ☐□☑✓✔]\s*)+(.+)$/u;
-  for (const line of lines.slice(1)) {
-    const m = line.match(itemRe);
-    if (m) {
-      if (!current) {current = {id: uuid(), title:'기타', items:[]}; groups.push(current);}
-      const label = clean(m[1]);
-      if (!label) continue;
-      current.items.push({id:uuid(), text:label, done:/^[-*•]\s*\[[xX]\]|^[☑✓✔]/u.test(line)});
-      total += 1;
-    } else {
-      current = {id:uuid(), title:line.replace(/^#+\s*/, ''), items:[]};
-      groups.push(current);
-    }
-  }
-  if (!total) throw Error('체크할 항목이 없어. 각 항목을 - 또는 ㅁ으로 시작해 줘.');
-  return {title, groups};
+ const lines=String(input||'').replace(/\r\n?/g,'\n').split('\n').map(x=>x.trim()).filter(Boolean);
+ if(!lines.length)throw Error('제목과 할 일을 입력해 줘.');
+ const title=lines[0].replace(/^#+\s*/,'').trim();
+ if(!title)throw Error('첫 줄에 제목을 입력해 줘.');
+ const tasks=lines.slice(1);
+ if(!tasks.length)throw Error('제목 아래에 - 할 일을 한 줄 이상 입력해 줘.');
+ const items=tasks.map(line=>{
+  const m=line.match(/^[-*•]\s*(?:\[[ xX]\]\s*)?(.+)$/u);
+  if(!m||!m[1].trim())throw Error('할 일은 각각 - 로 시작해 줘.');
+  return {id:uuid(),text:m[1].trim(),done:false,status:'pending',completedAt:null};
+ });
+ return {title,groups:[{id:uuid(),title:'할 일',items}]};
 }
 
 const itemStage = item => item.done ? 2 : (item.status === 'in_progress' || item.status === 1 ? 1 : 0);
@@ -45,10 +31,6 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
   const [selectedId,setSelectedId] = useState(null);
   const [mode,setMode] = useState('list');
   const [source,setSource] = useState(starterText);
-  const [tagInput,setTagInput] = useState('');
-  const [tagFilter,setTagFilter] = useState('전체');
-  const [tagsExpanded,setTagsExpanded] = useState(false);
-  const [editingTags,setEditingTags] = useState(false);
   const [error,setError] = useState('');
   const [message,setMessage] = useState('');
   const [busy,setBusy] = useState(false);
@@ -59,10 +41,8 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
   const activeLists = lists.filter(x=>!x.archived);
   const archivedLists = lists.filter(x=>!!x.archived);
   const [showArchived,setShowArchived] = useState(false);
-  const normalizeTags = value => [...new Set(String(value||'').split(/[,，\n#]+/).map(x=>x.trim()).filter(Boolean))].slice(0,30);
-  const allTags = [...new Set(lists.flatMap(l=>Array.isArray(l.tags)?l.tags:[]))].sort((a,b)=>a.localeCompare(b,'ko'));
-  const visibleActive = activeLists.filter(l=>tagFilter==='전체'||(l.tags||[]).includes(tagFilter));
-  const visibleArchived = archivedLists.filter(l=>tagFilter==='전체'||(l.tags||[]).includes(tagFilter));
+  const visibleActive = activeLists;
+  const visibleArchived = archivedLists;
 
   const refresh = useCallback(async () => {
     if (!client || !userId) return;
@@ -94,7 +74,7 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
     setBusy(true);setError('');
     try {
       const {data,error}=await client.from('app_checklists').insert({
-        user_id:userId,project_id:projectId,title:parsed.title,groups:parsed.groups,tags:normalizeTags(tagInput)
+        user_id:userId,project_id:projectId,title:parsed.title,groups:parsed.groups,tags:[]
       }).select().single();
       if(error) throw error;
       setLists(prev=>[data,...prev.filter(x=>x.id!==data.id)]);onChanged?.();
@@ -134,7 +114,9 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
     if(!selected)return;
     const value=window.prompt('추가할 체크 항목');
     if(!clean(value))return;
-    await updateRow(selected,{groups:selected.groups.map(g=>g.id===groupId?{...g,items:[...g.items,{id:uuid(),text:clean(value),done:false}]}:g)});
+    const groups=selected.groups.length?selected.groups:[{id:uuid(),title:'할 일',items:[]}];
+    const target=groupId||groups[0].id;
+    await updateRow(selected,{groups:groups.map(g=>g.id===target?{...g,items:[...g.items,{id:uuid(),text:clean(value),done:false}]}:g)});
   }
   async function removeItem(groupId,itemId) {
     if(!selected || !window.confirm('이 체크 항목을 삭제할까?'))return;
@@ -197,17 +179,13 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
     <div className="cl-header">
       <button type="button" className="cl-back" onClick={()=>{if(mode==='list')onClose();else{setMode('list');setEditing(null);}}} aria-label="뒤로가기"><ArrowLeft size={19}/></button>
       <h1>체크리스트</h1>
-      {mode==='list'&&<button className="cl-new" onClick={()=>{setSource(starterText);setTagInput('');setMode('create');setError('');}}><Plus size={18}/> 추가</button>}
+      {mode==='list'&&<button className="cl-new" onClick={()=>{setSource(starterText);setMode('create');setError('');}}><Plus size={18}/> 추가</button>}
     </div>
     {error&&<p className="cl-error" role="alert">{error}</p>}
     {message&&<p className="cl-message" role="status">{message}</p>}
     {mode==='list'&&<>
-      <div className={'cl-tag-filter '+(tagsExpanded?'expanded':'')}>
-        <div className="cl-tag-line"><button type="button" className={tagFilter==='전체'?'active':''} onClick={()=>setTagFilter('전체')}>전체</button>{allTags.map(t=><button type="button" key={t} className={tagFilter===t?'active':''} onClick={()=>setTagFilter(t)}>#{t}</button>)}</div>
-        {allTags.length>0&&<button type="button" className="cl-tag-expand" aria-expanded={tagsExpanded} onClick={()=>setTagsExpanded(v=>!v)}>{tagsExpanded?'접기':'펼치기'} {tagsExpanded?<ChevronDown size={15}/>:<ChevronRight size={15}/>}</button>}
-      </div>
       <div className="cl-list">{visibleActive.map(l=><div className="cl-list-row cl-featured-row" key={l.id}>
-        <button type="button" className="cl-row-open" onClick={()=>{setSelectedId(l.id);setMode('detail');setMessage('');}}><span><strong>{l.title}</strong><small>{countDone(l)}/{countAll(l)} 완료{(l.tags||[]).length?' · '+l.tags.map(t=>'#'+t).join(' '):''}</small></span><ChevronRight size={18}/></button>
+        <button type="button" className="cl-row-open" onClick={()=>{setSelectedId(l.id);setMode('detail');setMessage('');}}><span><strong>{l.title}</strong><small>{countDone(l)}/{countAll(l)} 완료</small></span><ChevronRight size={18}/></button>
         <button type="button" className="cl-feature-star" disabled={busy} aria-label={l.featured?'홈 표시 별표 해제':'홈에 이 체크리스트 표시'} title={l.featured?'홈 표시 해제':'홈에 표시'} onClick={()=>toggleFeatured(l)}><Star size={20} fill={l.featured?'#9772c6':'none'} color={l.featured?'#9772c6':'#aaa0b3'}/></button>
       </div>)}{!visibleActive.length&&<p className="cl-empty">진행 중인 체크리스트가 없어. + 추가로 만들어 봐!</p>}</div>
       <button type="button" className="cl-archive-toggle" onClick={()=>setShowArchived(v=>!v)} aria-expanded={showArchived}>
@@ -218,15 +196,12 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
       </button>)}{!visibleArchived.length&&<p className="cl-empty">보관된 체크리스트가 없어.</p>}</div>}
     </>}
     {mode==='create'&&<div className="cl-card">
-      <h2>글 붙여넣기</h2><label className="cl-tag-label">태그 (쉼표로 구분)<input value={tagInput} onChange={e=>setTagInput(e.target.value)} placeholder="예: 앱개발, 시험준비" maxLength={240}/></label>
-      <p className="cl-helper">첫 줄은 제목, 일반 줄은 그룹, - · ㅁ · ☐ · □ 로 시작하는 줄은 체크 항목이야. 들여쓰기는 필요 없어.</p>
+      <h2>글 붙여넣기</h2>
       <textarea aria-label="체크리스트 텍스트" className="cl-import" value={source} onChange={e=>setSource(e.target.value)} rows={15}/>
       <button className="cl-primary" disabled={busy} onClick={createFromText}>체크리스트 생성 및 저장</button>
     </div>}
     {mode==='detail'&&selected&&<>
       <div className="cl-detail-head"><div className="cl-detail-title-row"><h2>{selected.title}</h2><span className="cl-muted">{progress} 완료</span></div>
-        <div className="cl-detail-tags"><span>{(selected.tags||[]).map(t=>'#'+t).join(' ')||'태그 없음'}</span><button type="button" onClick={()=>{setTagInput((selected.tags||[]).join(', '));setEditingTags(v=>!v);}}><Pencil size={14}/> 태그</button></div>
-        {editingTags&&<div className="cl-tag-edit"><input aria-label="태그 수정" value={tagInput} onChange={e=>setTagInput(e.target.value)} placeholder="태그를 쉼표로 구분"/><button type="button" disabled={busy} onClick={async()=>{if(await updateRow(selected,{tags:normalizeTags(tagInput)},'태그를 저장했어.'))setEditingTags(false);}}>저장</button></div>}
         <div className="cl-detail-toolbar">{selected.archived&&<p className="cl-muted">아카이브 · 홈 집계 제외</p>}
         <div className="cl-actions">
           <button type="button" aria-label={selected.archived?'아카이브에서 복원':'아카이브로 보관'} title={selected.archived?'아카이브에서 복원':'아카이브로 보관'} disabled={busy} onClick={()=>toggleArchive(selected)}>{selected.archived?<ArchiveRestore size={17}/>:<Archive size={17}/>}</button>
@@ -237,27 +212,17 @@ export function ChecklistPanel({client,userId,projectId,onClose,onChanged}) {
         </div>
         </div>
       </div>
-      {selected.groups.map(g=>{
-        const closed=!!collapsed[g.id], done=g.items.filter(x=>x.done).length;
-        return <div className="cl-card" key={g.id}>
-          <div className="cl-group-head">
-            <button className="cl-group-toggle" onClick={()=>setCollapsed(p=>({...p,[g.id]:!p[g.id]}))} aria-expanded={!closed}>
-              {closed?<ChevronRight size={17}/>:<ChevronDown size={17}/>} <strong>{g.title}</strong>
-            </button>
-            <span className="cl-muted">{done}/{g.items.length}</span>
-            <button className="cl-small" aria-label={`${g.title} 이름 수정`} onClick={()=>{setEditing({kind:'group',groupId:g.id});setDraft(g.title);}}><Pencil size={15}/></button>
+      <div className="cl-card cl-flat-list">
+        <div className="cl-items">{selected.groups.flatMap(g=>(g.items||[]).map(x=>({item:x,groupId:g.id}))).map(({item:x,groupId})=><div className="cl-item" key={x.id}>
+          <div className={'cl-task-label '+(x.done?'cl-done':'')}>
+            <button type="button" className={'cl-stage-check cl-stage-'+itemStage(x)} disabled={busy} onClick={()=>toggleItem(groupId,x.id)} aria-label={`${x.text}: ${itemStage(x)===0?'미시작':itemStage(x)===1?'진행 중':'완료'} · 누르면 다음 단계`}>{itemStage(x)===2?<Check size={15} strokeWidth={3}/>:null}</button>
+            <span>{x.text}</span>
           </div>
-          {!closed&&<><div className="cl-items">{g.items.map(x=><div className="cl-item" key={x.id}>
-            <div className={'cl-task-label '+(x.done?'cl-done':'')}>
-              <button type="button" className={'cl-stage-check cl-stage-'+itemStage(x)} disabled={busy} onClick={()=>toggleItem(g.id,x.id)} aria-label={`${x.text}: ${itemStage(x)===0?'미시작':itemStage(x)===1?'진행 중':'완료'} · 누르면 다음 단계`} title={itemStage(x)===0?'미시작 → 진행 중':itemStage(x)===1?'진행 중 → 완료':'완료 → 미시작'}>{itemStage(x)===2?<Check size={15} strokeWidth={3}/>:null}</button>
-              <span>{x.text}</span>
-            </div>
-            <button className="cl-small" aria-label={`${x.text} 수정`} onClick={()=>{setEditing({kind:'item',groupId:g.id,itemId:x.id});setDraft(x.text);}}><Pencil size={15}/></button>
-            <button className="cl-small" aria-label={`${x.text} 삭제`} onClick={()=>removeItem(g.id,x.id)}><X size={15}/></button>
-          </div>)}</div><button className="cl-add" onClick={()=>addItem(g.id)}><Plus size={16}/> 항목 추가</button></>}
-        </div>;
-      })}
-      <button className="cl-add cl-bottom-add" onClick={addGroup}><Plus size={16}/> 그룹 추가</button>
+          <button className="cl-small" aria-label={`${x.text} 수정`} onClick={()=>{setEditing({kind:'item',groupId,itemId:x.id});setDraft(x.text);}}><Pencil size={15}/></button>
+          <button className="cl-small" aria-label={`${x.text} 삭제`} onClick={()=>removeItem(groupId,x.id)}><X size={15}/></button>
+        </div>)}</div>
+        <button className="cl-add" onClick={()=>addItem(selected.groups[0]?.id)}><Plus size={16}/> 항목 추가</button>
+      </div>
       {editing&&<div className="cl-editor-backdrop" onClick={()=>setEditing(null)}><form className="cl-editor" onSubmit={e=>{e.preventDefault();editText();}} onClick={e=>e.stopPropagation()}>
         <h3>내용 수정</h3><textarea autoFocus rows={3} value={draft} onChange={e=>setDraft(e.target.value)}/>
         <div className="cl-editor-actions"><button type="button" onClick={()=>setEditing(null)}>취소</button><button className="cl-primary" disabled={busy||!clean(draft)}>저장</button></div>
