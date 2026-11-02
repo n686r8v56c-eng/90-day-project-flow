@@ -289,3 +289,8 @@ header h1{font-size:20px;line-height:1.25}
 .category-manage-row input{flex:1;min-width:0;width:100%;font-size:16px;padding:9px 10px;border:1px solid #e7ddef;border-radius:9px;background:white}
 .category-manage-row button{flex:none;display:inline-flex;justify-content:center;align-items:center;min-height:36px;padding:6px 9px;border-radius:8px;background:#f0e9f8;color:#7c5a9e;font-size:12px}
 @media(max-width:390px){.category-toolbar button{font-size:11px;padding:6px 8px}.category-manage-row{gap:4px}.category-manage-row button{padding:6px}}
+
+/* Compact Vision previews: no count caption or divider above starred secrets. */
+.vision-grid .vision-secret-line{border-top:0;padding-top:0}
+.vision-grid.list-mode .vision-secret-line{border-top:0;padding-top:0}
+.vision-grid .vision-secret-preview{padding-top:0}
