@@ -307,3 +307,6 @@ header h1{font-size:20px;line-height:1.25}
 .category-heading .category-heading-chevron{display:grid;place-items:center;flex:0 0 30px;margin-left:auto;width:30px;height:30px;padding:0;background:transparent;border:0;color:inherit;cursor:pointer}
 .category-heading .category-heading-plus:focus-visible,.category-heading button:focus-visible{outline:2px solid #9672c5;outline-offset:1px}
 @media(max-width:370px){.category-toolbar{gap:4px}.category-toolbar>button,.category-toolbar .hidden-card-toggle{font-size:10px;letter-spacing:-.5px;padding:5px 2px}}
+
+/* Missing deployment URL: open the existing card editor instead of hiding the link action. */
+.project-external-link.project-link-missing{border:0;cursor:pointer;color:#a18cb9;background:#f3edf8;padding:0;touch-action:manipulation}
