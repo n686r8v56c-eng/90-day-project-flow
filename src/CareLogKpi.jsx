@@ -2,7 +2,7 @@ import React,{useEffect,useState,useMemo} from 'react';
 import {createClient} from '@supabase/supabase-js';
 import {RefreshCw,LogIn,LogOut,Star} from 'lucide-react';
 import './CareLogKpi.css';
-const care=createClient(import.meta.env.VITE_CARE_SUPABASE_URL||'https://sqqxgjlgmuolghcemjii.supabase.co',import.meta.env.VITE_CARE_SUPABASE_ANON_KEY||'sb_publishable_8qBLYWxO5nVlXUPqqAo7UQ_dNgaWq27',{auth:{storageKey:'ninety-day-care-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+export const care=createClient(import.meta.env.VITE_CARE_SUPABASE_URL||'https://sqqxgjlgmuolghcemjii.supabase.co',import.meta.env.VITE_CARE_SUPABASE_ANON_KEY||'sb_publishable_8qBLYWxO5nVlXUPqqAo7UQ_dNgaWq27',{auth:{storageKey:'ninety-day-care-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
 const today=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};
 const dayOf=iso=>{const d=new Date(iso);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};
 const specs=[['water','물','mL'],['steps','만보','보'],['sleep','수면','시간'],['protein_g','단백질','g'],['carbs_g','탄수화물','g'],['fat_g','지방','g'],['calories','총칼로리','kcal']];
