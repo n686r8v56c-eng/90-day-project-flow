@@ -15,7 +15,7 @@ const apps=[
  {id:'focus',label:'Focus',client:focusClient},
  {id:'mind',label:'Mind',client:mind},
  {id:'beauty',label:'Beauty Care · Care / Beauty / Body',client:beauty},
- {id:'dance',label:'Dance · Sequence',client:dance},
+ {id:'dance',label:'Dance Flow · Movement / Sequence',client:dance},
  {id:'sing',label:'Sing Flow · Sing',client:sing},
  {id:'fashion',label:'Fashion Flow · Fashion',client:fashion},
  {id:'cosmetic',label:'Cosmetic Flow · Cosmetic',client:cosmetic}
