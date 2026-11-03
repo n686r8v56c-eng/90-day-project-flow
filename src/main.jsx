@@ -121,7 +121,7 @@ useEffect(()=>{if(tab==='home'||tab==='strategy'||tab==='vision')setOpenGroups({
 const groupDefaultOpen=title=>tab==='home'||tab==='vision'||title==='⭐ 별표';
 const groupIsOpen=title=>openGroups[tab+'|'+title]??groupDefaultOpen(title);
 const toggleGroup=title=>setOpenGroups(old=>({...old,[tab+'|'+title]:!(old[tab+'|'+title]??groupDefaultOpen(title))}));
-const baseCategoryRows=(data.categories?.length?data.categories:defaultProjectGroups.map(g=>({id:g.id,title:g.title,archived:false}))).map(c=>c.id==='group-3'&&c.title==='놀줄알자'?{...c,title:'아름다운 세상'}:(c.id==='group-5'||c.title==='표현')?{...c,title:'표현'}:c);
+const baseCategoryRows=(data.categories?.length?data.categories:defaultProjectGroups.map(g=>({id:g.id,title:g.title,archived:false}))).map(c=>c.id==='group-3'&&c.title==='놀줄알자'?{...c,title:'아름다운 세상'}:(c.id==='group-5'||c.title==='스타일'||c.title==='표현')?{...c,title:'표현'}:c);
 const categoryRows=baseCategoryRows.some(c=>c.id==='group-5'||c.title==='표현')?baseCategoryRows:(()=>{const rows=[...baseCategoryRows];const study=rows.findIndex(c=>c.id==='group-2'||c.title==='공부');rows.splice(study>=0?study+1:rows.length,0,{id:'group-5',title:'표현',archived:false});return rows})();
 const groupIdFor=p=>{if(p.id==='mind')return 'group-2';if(p.id==='fashion'||p.id==='cosmetic')return categoryRows.find(c=>c.id==='group-5'||c.title==='표현')?.id||'group-5';if(p.categoryId)return p.categoryId;return defaultProjectGroups.find(g=>g.ids.includes(p.id))?.id||''};
 const groupIds=new Set(categoryRows.filter(c=>!c.archived).map(c=>c.id));
