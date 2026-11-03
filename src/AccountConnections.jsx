@@ -2,7 +2,6 @@ import React,{useCallback,useEffect,useState} from 'react';
 import {Link2,ChevronDown,Check,AlertCircle,LockKeyhole,RefreshCw} from 'lucide-react';
 import {spend} from './SpendFlowKpi.jsx';
 import {mind} from './MindFlowKpi.jsx';
-import {care} from './CareLogKpi.jsx';
 import {beauty} from './BeautyCareKpi.jsx';
 import {dance} from './DanceFlowKpi.jsx';
 import {sing} from './SingFlowKpi.jsx';
@@ -15,8 +14,7 @@ const apps=[
  {id:'spend',label:'Spend',client:spend},
  {id:'focus',label:'Focus',client:focusClient},
  {id:'mind',label:'Mind',client:mind},
- {id:'care',label:'Care',client:care},
- {id:'beauty',label:'Beauty Care · Beauty / Body',client:beauty},
+ {id:'beauty',label:'Beauty Care · Care / Beauty / Body',client:beauty},
  {id:'dance',label:'Dance · Sequence',client:dance},
  {id:'sing',label:'Sing Flow · Sing',client:sing},
  {id:'fashion',label:'Fashion Flow · Fashion',client:fashion},
