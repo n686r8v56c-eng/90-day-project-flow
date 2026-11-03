@@ -34,7 +34,7 @@ const defaults=[
 {id:'save',name:'Save',icon:'🐷',source:'Save Flow',kind:'linked',kpis:[{name:'저축액',target:1000000,unit:'원'}]},
 {id:'spend',name:'Spend',icon:'🧾',source:'Spend Flow',kind:'linked',kpis:[{name:'예산 잔액 확보',target:900000,unit:'원'},{name:'무지출 데이',target:30,unit:'일'},{name:'계획 소비율',target:80,unit:'%'},{name:'줄이기 소비 감소',target:20,unit:'%'}]},
 {id:'income',name:'Income',icon:'💰',source:'Income Flow',kind:'linked',kpis:[{name:'월 총매출',target:3000000,unit:'원'}]},
-{id:'fashion',name:'Fashion',icon:'👗',source:'Fashion Flow',kind:'linked',kpis:[{name:'보유 아이템',target:30,unit:'개'},{name:'저장한 코디',target:20,unit:'개'},{name:'잇걸룩 코디',target:20,unit:'개'}]},
+{id:'fashion',name:'Fashion',icon:'👗',source:'Fashion Flow',kind:'linked',kpis:[{name:'보유 아이템',target:30,unit:'개'},{name:'실착 기록',target:30,unit:'건'},{name:'잇걸룩 수',target:20,unit:'개'},{name:'실현 완료율',target:80,unit:'%'}]},
 {id:'cosmetic',name:'Cosmetic',icon:'💄',source:'Cosmetic Flow',kind:'linked',kpis:[]}
 ];
 const registryAppUrls={"beauty":"https://style-flow.pages.dev/","fitness":"https://home-fit-11n.pages.dev/","care":"https://care-log-aqs.pages.dev/","mind":"https://mind-flow-4r3.pages.dev/","spend":"https://spend-flow.pages.dev/","save":"https://saving-flow.pages.dev/","income":"https://income-flow.pages.dev/","time":"https://focus-flow-3f0.pages.dev/","memorylab":"https://memory-lab.pages.dev/","marriage":"https://marriage-flow.pages.dev/"};
@@ -45,7 +45,19 @@ const maintenanceDefaultUrls={"iCare":"https://care-log-aqs.pages.dev/","Focus F
 const tabs=[['home','홈',BarChart3],['vision','비전',Sparkles],['strategy','전술',House],['calendar','일정',CalendarDays],['change','변화',TrendingUp]];
 const today=()=>new Date().toISOString().slice(0,10);
 const addDays=(s,n)=>{let d=new Date(s+'T12:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
-const ensureProjects=stored=>{const existing=Array.isArray(stored)?stored:[];return [...existing,...defaults.filter(p=>!existing.some(x=>x.id===p.id))]};
+const ensureProjects=stored=>{
+ const existing=Array.isArray(stored)?stored:[];
+ const fashionDefaults=defaults.find(p=>p.id==='fashion').kpis;
+ const migrated=existing.map(p=>{
+  if(p.id!=='fashion')return p;
+  const old=Array.isArray(p.kpis)?p.kpis:[];
+  const remap={'잇걸룩 코디':'잇걸룩 수'};
+  const updated=old.map(k=>({...k,name:remap[k.name]||k.name})).filter(k=>k.name!=='저장한 코디');
+  const names=new Set(updated.map(k=>k.name));
+  return {...p,kpis:[...updated,...fashionDefaults.filter(k=>!names.has(k.name))]};
+ });
+ return [...migrated,...defaults.filter(p=>!existing.some(x=>x.id===p.id))];
+};
 const initial=()=>({start:today(),projects:defaults,selected:'all',tasks:[],logs:[],links:{},maintenanceLinks:{},visions:{},visionSecrets:{},visionRoadmaps:{},hiddenCards:{home:[],vision:[]},viewModes:{home:'grid',kpi:'grid',vision:'grid'},categories:[],cardSort:'category'});
 const load=()=>initial(); // Never hydrate another account's local cache before authentication.
 function App(){const[session,setSession]=useState(null),[authLoading,setAuthLoading]=useState(!!supabase),[email,setEmail]=useState(''),[password,setPassword]=useState(''),[authError,setAuthError]=useState(''),[register,setRegister]=useState(false),[data,setData]=useState(load),[tab,setTab]=useState('home'),[openGroups,setOpenGroups]=useState({}),[changeGroup,setChangeGroup]=useState('all'),[changeProject,setChangeProject]=useState('all'),[menu,setMenu]=useState(false),[modal,setModal]=useState(null),[draft,setDraft]=useState({}),[month,setMonth]=useState(today().slice(0,7)),[calendarView,setCalendarView]=useState('checklist'),[calendarProject,setCalendarProject]=useState('all'),[calendarGroup,setCalendarGroup]=useState('all'),[cloudReady,setCloudReady]=useState(false),[syncStatus,setSyncStatus]=useState('loading'),[authBusy,setAuthBusy]=useState(false),[showPassword,setShowPassword]=useState(false),[checklistProject,setChecklistProject]=useState(null),[listRows,setListRows]=useState([]),[listError,setListError]=useState(''),[categoryFilter,setCategoryFilter]=useState('all'),[kpiProject,setKpiProject]=useState(null),[kpiDetailTab,setKpiDetailTab]=useState('kpi'),[visionProject,setVisionProject]=useState(null),[visionSubtab,setVisionSubtab]=useState('milestones'),[visionOverviewMode,setVisionOverviewMode]=useState('cards'),[visionBusy,setVisionBusy]=useState(false),[visionError,setVisionError]=useState(''),[hiddenPanel,setHiddenPanel]=useState(null);
@@ -139,8 +151,9 @@ const addLog=()=>{if(!draft.title?.trim()||!data.projects.some(p=>p.id===draft.p
 const spendFeatured=data.spendFeatured||[];
 const mindFeatured=data.mindFeatured||[];
 const careFeatured=data.careFeatured||[];
-const fashionFeatured=Array.isArray(data.fashionFeatured)?data.fashionFeatured:['items','outfits'];
-const toggleFashionFeatured=id=>update(d=>{const old=Array.isArray(d.fashionFeatured)?d.fashionFeatured:['items','outfits'];return {...d,fashionFeatured:old.includes(id)?old.filter(x=>x!==id):[...old.slice(-1),id]}});
+const normalizeFashionFeatured=ids=>[...new Set((Array.isArray(ids)?ids:['items','worn']).map(id=>id==='outfits'?'worn':id))].filter(id=>['items','worn','looks','completion'].includes(id)).slice(0,2);
+const fashionFeatured=normalizeFashionFeatured(data.fashionFeatured);
+const toggleFashionFeatured=id=>update(d=>{const old=normalizeFashionFeatured(d.fashionFeatured);return {...d,fashionFeatured:old.includes(id)?old.filter(x=>x!==id):[...old.slice(-1),id]}});
 const sequenceFeatured=Array.isArray(data.sequenceFeatured)?data.sequenceFeatured:['registered','learned'];
 const toggleSequenceFeatured=id=>update(d=>{const old=Array.isArray(d.sequenceFeatured)?d.sequenceFeatured:['registered','learned'];return {...d,sequenceFeatured:old.includes(id)?old.filter(x=>x!==id):[...old.slice(-1),id]}});
 const isSequenceProject=p=>p?.id==='sequence'||String(p?.name||'').trim().toLowerCase()==='sequence';
