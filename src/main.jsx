@@ -26,6 +26,7 @@ const defaults=[
 {id:'social',name:'Social',icon:'🤝',source:'Project Flow',kind:'internal',kpis:[{name:'모임 참여',target:8,unit:'회'},{name:'새로운 활동',target:4,unit:'회'}]},
 {id:'marriage',name:'Marriage',icon:'💜',source:'Marriage / Love Flow',kind:'linked',kpis:[{name:'관계·가치관 정리',target:10,unit:'개'}]},
 {id:'dance',name:'Dance',icon:'💃',source:'Dance Flow',kind:'linked',kpis:[{name:'습득 동작',target:30,unit:'개'},{name:'완성 안무',target:3,unit:'개'}]},
+{id:'movement',name:'Movement',icon:'💃',source:'Dance Flow',kind:'linked',kpis:[{name:'등록 동작',target:30,unit:'개'},{name:'습득 동작',target:20,unit:'개'},{name:'완성 안무',target:3,unit:'개'},{name:'연습 시간',target:300,unit:'분'}]},
 {id:'sing',name:'Sing',icon:'🎤',source:'Sing Flow',kind:'linked',kpis:[{name:'훈련 등록',target:20,unit:'개'},{name:'훈련 시간',target:300,unit:'분'},{name:'기술 등록',target:20,unit:'개'},{name:'기술 습득 시간',target:300,unit:'분'},{name:'총 학습 메모',target:30,unit:'개'},{name:'완곡',target:10,unit:'곡'}]},
 {id:'license',name:'License',icon:'📚',source:'License Flow / Memory Lab',kind:'linked',kpis:[{name:'암기 완료 논점',target:270,unit:'개'}]},
 {id:'time',name:'Time',icon:'⏰',source:'Focus Flow',kind:'linked',kpis:[]},
@@ -41,7 +42,7 @@ const defaults=[
 ];
 const registryAppUrls={"beauty":"https://style-flow.pages.dev/","fitness":"https://home-fit-11n.pages.dev/","care":"https://care-log-aqs.pages.dev/","mind":"https://mind-flow-4r3.pages.dev/","spend":"https://spend-flow.pages.dev/","save":"https://saving-flow.pages.dev/","income":"https://income-flow.pages.dev/","time":"https://focus-flow-3f0.pages.dev/","memorylab":"https://memory-lab.pages.dev/","marriage":"https://marriage-flow.pages.dev/"};
 const projectColor=id=>({spend:'#9570B9',save:'#C68BA9',income:'#C69B63',time:'#7E94B8',beauty:'#D68EAB',fitness:'#6FA89B',care:'#BD9BCE',mind:'#8F9DC6',license:'#8570C1',memorylab:'#7898C1',sing:'#D09C7B',dance:'#C78DA3',social:'#8DB4A2',marriage:'#B789BD'}[id]||'#9879BA');
-const defaultProjectGroups=[{id:'group-0',title:'재정과 시간',ids:['spend','save','income','time']},{id:'group-1',title:'미모개선',ids:['beauty','fitness','care']},{id:'group-2',title:'공부',ids:['license','memorylab','mind']},{id:'group-5',title:'표현',ids:['fashion','cosmetic','sing']},{id:'group-4',title:'우리 만나요',ids:['social','marriage']}];
+const defaultProjectGroups=[{id:'group-0',title:'재정과 시간',ids:['spend','save','income','time']},{id:'group-1',title:'미모개선',ids:['beauty','fitness','care']},{id:'group-2',title:'공부',ids:['license','memorylab','mind']},{id:'group-5',title:'표현',ids:['fashion','cosmetic','sing','movement']},{id:'group-4',title:'우리 만나요',ids:['social','marriage']}];
 const maintenance=[{name:'iCare',desc:'일상 케어',icon:'♡'},{name:'Focus Flow',desc:'집중·할 일',icon:'◷'},{name:'Mind Flow',desc:'호흡·명상',icon:'✿'},{name:'Playlist',desc:'음악·감상',icon:'♫'},{name:'Write Flow',desc:'글쓰기',icon:'✎'},{name:'Lumi notes',desc:'노트',icon:'✧'},{name:'Expression',desc:'표현·연습',icon:'✦'},{name:'Learn',desc:'학습',icon:'▤'}];
 const maintenanceDefaultUrls={"iCare":"https://care-log-aqs.pages.dev/","Focus Flow":"https://focus-flow-3f0.pages.dev/","Mind Flow":"https://mind-flow-4r3.pages.dev/","Playlist":"https://playlist-flow.pages.dev/","Write Flow":"https://write-flow.pages.dev/","Lumi notes":"https://tranquil-heliotrope-30be64.netlify.app"};
 const tabs=[['home','홈',BarChart3],['vision','비전',Sparkles],['strategy','전술',House],['calendar','일정',CalendarDays],['change','변화',TrendingUp]];
@@ -138,9 +139,9 @@ const groupIsOpen=title=>openGroups[tab+'|'+title]??groupDefaultOpen(title);
 const toggleGroup=title=>setOpenGroups(old=>({...old,[tab+'|'+title]:!(old[tab+'|'+title]??groupDefaultOpen(title))}));
 const baseCategoryRows=(data.categories?.length?data.categories:defaultProjectGroups.map(g=>({id:g.id,title:g.title,archived:false}))).filter(c=>c.id!=='group-3'&&c.title!=='아름다운 세상'&&c.title!=='놀줄알자'&&c.id!=='group-4'&&c.title!=='우리 만나요').map(c=>(c.id==='group-5'||c.title==='스타일'||c.title==='표현')?{...c,title:'표현'}:c);
 const categoryRows=baseCategoryRows.some(c=>c.id==='group-5'||c.title==='표현')?baseCategoryRows:(()=>{const rows=[...baseCategoryRows];const study=rows.findIndex(c=>c.id==='group-2'||c.title==='공부');rows.splice(study>=0?study+1:rows.length,0,{id:'group-5',title:'표현',archived:false});return rows})();
-const groupIdFor=p=>{if(p.id==='mind')return 'group-2';if(p.id==='fashion'||p.id==='cosmetic'||p.id==='sing'||p.categoryId==='group-3')return categoryRows.find(c=>c.id==='group-5'||c.title==='표현')?.id||'group-5';if(p.categoryId)return p.categoryId;return defaultProjectGroups.find(g=>g.ids.includes(p.id))?.id||''};
+const groupIdFor=p=>{if(p.id==='mind')return 'group-2';if(p.id==='fashion'||p.id==='cosmetic'||p.id==='sing'||p.id==='movement'||p.categoryId==='group-3')return categoryRows.find(c=>c.id==='group-5'||c.title==='표현')?.id||'group-5';if(p.categoryId)return p.categoryId;return defaultProjectGroups.find(g=>g.ids.includes(p.id))?.id||''};
 const groupIds=new Set(categoryRows.filter(c=>!c.archived).map(c=>c.id));
-const expressionOrder=['fashion','cosmetic','sing','voice'];
+const expressionOrder=['fashion','cosmetic','sing','voice','movement'];
 const projectGroups=categoryRows.filter(c=>!c.archived).map(c=>({id:c.id,title:c.title,ids:data.projects.filter(p=>p.id!=='dance'&&p.id!=='social'&&p.id!=='marriage'&&!p.archived&&groupIdFor(p)===c.id).sort((a,b)=>{if(c.id!=='group-5'&&c.title!=='표현')return 0;const rank=p=>{const name=String(p.name||'').trim().toLowerCase();const id=String(p.id||'').toLowerCase();const byName=expressionOrder.indexOf(name);return byName>=0?byName:(expressionOrder.indexOf(id)>=0?expressionOrder.indexOf(id):expressionOrder.length)};return rank(a)-rank(b)}).map(p=>p.id)}));
 const persistCategories=fn=>update(d=>({...d,categories:[...fn(categoryRows),...(d.categories||[]).filter(c=>c.id==='group-4'||c.title==='우리 만나요')]}));
 const createCategory=()=>{const title=String(draft.title||'').trim();if(!title)return;persistCategories(rows=>[...rows,{id:crypto.randomUUID(),title,archived:false}]);close()};
@@ -176,7 +177,7 @@ const singFeatured=Array.isArray(data.singFeatured)?data.singFeatured:['training
 const toggleSingFeatured=id=>update(d=>{const old=Array.isArray(d.singFeatured)?d.singFeatured:['trainingCount','trainingMinutes'];return {...d,singFeatured:old.includes(id)?old.filter(x=>x!==id):[...old.slice(-1),id]}});
 const sequenceFeatured=Array.isArray(data.sequenceFeatured)?data.sequenceFeatured:['registered','learned'];
 const toggleSequenceFeatured=id=>update(d=>{const old=Array.isArray(d.sequenceFeatured)?d.sequenceFeatured:['registered','learned'];return {...d,sequenceFeatured:old.includes(id)?old.filter(x=>x!==id):[...old.slice(-1),id]}});
-const isSequenceProject=p=>p?.id==='sequence'||String(p?.name||'').trim().toLowerCase()==='sequence';
+const isSequenceProject=p=>p?.id==='sequence'||p?.id==='movement'||String(p?.name||'').trim().toLowerCase()==='sequence'||String(p?.name||'').trim().toLowerCase()==='movement';
 const beautyFeatured=(data.beautyFeatured||[]).filter(id=>id==='face'||id==='hair'||id==='input');
 const bodyFeatured=(data.bodyFeatured??(data.beautyFeatured||[]).filter(id=>!['face','input'].includes(id))).filter(id=>['gym','strength','stretch','massage','waist','thigh','calf'].includes(id));
 const toggleBodyFeatured=id=>update(d=>{const old=d.bodyFeatured??(d.beautyFeatured||[]).filter(x=>!['face','input'].includes(x));return {...d,bodyFeatured:old.includes(id)?old.filter(x=>x!==id):[...old.slice(-1),id]}});
@@ -198,7 +199,8 @@ const roadmapKpis=p=>{
  beauty:[['얼굴 관리율',100,'%'],['헤어 관리율',100,'%'],['기록 입력률',100,'%']],
  fitness:[['헬스장 출석',3,'회'],['근력운동',120,'분'],['스트레칭',90,'분'],['마사지',60,'분']],
  dance:[['등록 동작',20,'개'],['습득 동작',20,'개'],['완성 안무',1,'개']],
- sequence:[['등록 동작',20,'개'],['습득 동작',20,'개'],['완성 안무',1,'개']],
+ sequence:[['등록 동작',20,'개'],['습득 동작',20,'개'],['완성 안무',1,'개'],['연습 시간',300,'분']],
+ movement:[['등록 동작',20,'개'],['습득 동작',20,'개'],['완성 안무',1,'개'],['연습 시간',300,'분']],
  time:[['집중 시간',600,'분']]
  };
  const base=(p?.kpis||[]).map(k=>({name:k.name,target:Number(k.target)||0,unit:k.unit||'',auto:p.kind==='internal'}));
