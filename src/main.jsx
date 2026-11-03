@@ -53,6 +53,7 @@ const ensureProjects=stored=>{
  const cosmeticDefaults=defaults.find(p=>p.id==='cosmetic').kpis;
  const singDefaults=defaults.find(p=>p.id==='sing').kpis;
  const migrated=existing.map(p=>{
+  if(p.id==='care')return {...p,source:'Beauty Care'};
   if(p.id==='sing'){
    const existing=Array.isArray(p.kpis)?p.kpis:[];
    const names=new Set(existing.map(k=>k.name));
