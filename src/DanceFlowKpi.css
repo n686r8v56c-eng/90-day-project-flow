@@ -18,7 +18,7 @@
 .dance-kpi-error{padding:9px;border-radius:10px;color:#b34567;background:#fff0f4;font-size:12px}
 .dance-kpi-breakdown{margin-top:15px}.dance-kpi-breakdown>strong{font-size:14px}
 .dance-kpi-table{margin-top:8px;display:flex;flex-direction:column;gap:0}
-.dance-kpi-table-row{display:grid;grid-template-columns:minmax(0,1.5fr)repeat(3,minmax(0,.7fr));gap:4px;align-items:center;padding:9px 6px;border-bottom:1px solid #eee6f4;font-size:12px}
+.dance-kpi-table-row{display:grid;grid-template-columns:minmax(0,1.4fr)repeat(3,minmax(0,.65fr)) minmax(0,1fr);gap:4px;align-items:center;padding:9px 6px;border-bottom:1px solid #eee6f4;font-size:12px}
 .dance-kpi-table-row>span{min-width:0;overflow-wrap:anywhere}.dance-kpi-table-row>span:not(:first-child){text-align:right}
 .dance-kpi-table-head{color:#967bad;background:#f9f6fc;font-weight:700}
 @media(max-width:370px){.dance-kpi-metric{padding:9px}.dance-kpi-top{font-size:12px}}
