@@ -1,1 +1,44 @@
 .ta-root{min-width:0;padding:5px 0 16px}.ta-root h3{font-size:18px;margin:10px 0 4px}.ta-note{font-size:12px;color:#92859d;line-height:1.5}.ta-message{padding:20px 12px;background:#f8f5fb;border-radius:12px;color:#77648e;font-size:14px}.ta-filters{display:grid;grid-template-columns:1fr 105px 130px;gap:9px;margin:17px 0;min-width:0}.ta-filters label{min-width:0;color:#7c7187;font-size:12px;display:flex;flex-direction:column;gap:5px}.ta-filters select,.ta-filters input{width:100%;max-width:100%;min-width:0;box-sizing:border-box;border:1px solid #e4dcea;background:#fff;border-radius:9px;padding:9px 7px;font-size:16px;color:#3a3145}.ta-totals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.ta-totals>div{padding:12px 8px;background:#f6f1fa;border-radius:10px;min-width:0}.ta-totals small{display:block;color:#857791;font-size:11px}.ta-totals strong{font-size:17px;word-break:break-all}.ta-legend{display:flex;gap:15px;justify-content:flex-end;font-size:12px;color:#6b5d77;margin:18px 0 8px}.ta-legend span{display:flex;align-items:center;gap:5px}.ta-key{display:inline-block;width:10px;height:10px;border-radius:3px}.ta-goal{background:#d5c4e8}.ta-actual{background:#9070bc}.ta-chart-scroll{overflow-x:auto;max-width:100%;width:100%;padding-bottom:3px}.ta-chart{height:190px;display:flex;align-items:stretch;gap:7px;border-bottom:1px solid #e5ddea;min-width:0}.ta-day{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:5px}.ta-day small{font-size:10px;color:#897e92;white-space:nowrap}.ta-bar-area{height:158px;width:100%;display:flex;align-items:end;justify-content:center;gap:3px}.ta-bar{width:35%;min-height:0;border-radius:4px 4px 0 0}.ta-bar-goal{background:#d5c4e8}.ta-bar-actual{background:#9070bc}.ta-daily-list{margin:14px 0;border-top:1px solid #eee7f4}.ta-daily-list>div{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:9px 2px;border-bottom:1px solid #eee7f4;font-size:12px;color:#887c93}.ta-daily-list strong{color:#665777;text-align:right;font-weight:600}.ta-daily-list span:nth-child(2){text-align:right}@media(max-width:520px){.ta-filters{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.ta-filters label:last-child{grid-column:1 / -1}.ta-totals strong{font-size:15px}}
+
+
+/* Phone text minimums; existing larger type remains unchanged. */
+@media (max-width: 749px) {
+    .ta-root h3 {
+        font-size: 18px !important
+    }
+    .ta-note {
+        font-size: 15px !important
+    }
+    .ta-message {
+        font-size: 16px !important
+    }
+    .ta-filters label {
+        font-size: 15px !important
+    }
+    .ta-filters select {
+        font-size: 16px !important
+    }
+    .ta-filters input {
+        font-size: 16px !important
+    }
+    .ta-totals small {
+        font-size: 14px !important
+    }
+    .ta-totals strong {
+        font-size: 17px !important
+    }
+    .ta-legend {
+        font-size: 15px !important
+    }
+    .ta-day small {
+        font-size: 13px !important
+    }
+    .ta-daily-list>div {
+        font-size: 15px !important
+    }
+    @media (max-width:520px) {
+        .ta-totals strong {
+            font-size: 15px !important
+        }
+    }
+}

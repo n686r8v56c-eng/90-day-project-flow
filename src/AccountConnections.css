@@ -1,1 +1,52 @@
 .ac-wrap{margin:8px 0 16px;max-width:760px}.ac-trigger{display:flex;align-items:center;gap:7px;width:100%;min-height:41px;border:1px solid #e5dbee;background:#fff;border-radius:11px;padding:9px 12px;color:#8767b0;text-align:left;font-size:13px;font-weight:700;cursor:pointer}.ac-trigger>span{flex:1}.ac-trigger>small{color:#9885a6;font-weight:600;font-size:12px}.ac-up{transform:rotate(180deg)}.ac-body{background:#fff;border:1px solid #e9dff0;border-radius:13px;margin-top:7px;padding:13px}.ac-body>p{margin:0 0 11px;color:#83748e;font-size:12px;line-height:1.5}.ac-form{display:flex;flex-direction:column;gap:8px}.ac-form input{box-sizing:border-box;width:100%;min-width:0;border:1px solid #e3d9ed;border-radius:9px;padding:11px;color:#38313f;background:#fff;font-size:16px}.ac-form button{background:#9675c5;border:0;border-radius:9px;min-height:39px;color:#fff;font-size:13px;font-weight:700}.ac-form button:disabled{opacity:.6}.ac-security{display:flex;align-items:center;gap:5px;margin:10px 0 13px;color:#918399;font-size:11px}.ac-notice{margin-bottom:8px;font-size:12px;color:#74569e;background:#f6f0fc;padding:9px;border-radius:8px}.ac-apps{display:grid;gap:0}.ac-app{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid #f0eaf5;padding:10px 2px;font-size:12px;flex-wrap:wrap}.ac-app>span:first-child{color:#493d50;font-weight:650}.ac-ok,.ac-muted{display:inline-flex;align-items:center;gap:4px;font-size:12px;white-space:nowrap}.ac-ok{color:#8662b7}.ac-muted{color:#a194ac}.ac-error{width:100%;font-size:11px;color:#bf4b6a;overflow-wrap:anywhere}.ac-refresh{display:inline-flex;align-items:center;gap:6px;margin-top:7px;padding:7px 4px;background:transparent;color:#8864b3;font-size:12px}.ac-wrap button{cursor:pointer;touch-action:manipulation}@media(max-width:360px){.ac-trigger{font-size:12px;padding:9px}.ac-trigger>small{font-size:11px}}
+
+
+/* Phone text minimums; existing larger type remains unchanged. */
+@media (max-width: 749px) {
+    .ac-trigger {
+        font-size: 16px !important
+    }
+    .ac-trigger>small {
+        font-size: 15px !important
+    }
+    .ac-body>p {
+        font-size: 15px !important
+    }
+    .ac-form input {
+        font-size: 16px !important
+    }
+    .ac-form button {
+        font-size: 16px !important
+    }
+    .ac-security {
+        font-size: 14px !important
+    }
+    .ac-notice {
+        font-size: 15px !important
+    }
+    .ac-app {
+        font-size: 15px !important
+    }
+    .ac-ok {
+        font-size: 15px !important
+    }
+    .ac-muted {
+        font-size: 15px !important
+    }
+    .ac-error {
+        font-size: 14px !important
+    }
+    .ac-refresh {
+        font-size: 15px !important
+    }
+    @media (max-width:360px) {
+        .ac-trigger {
+            font-size: 15px !important
+        }
+    }
+    @media (max-width:360px) {
+        .ac-trigger>small {
+            font-size: 14px !important
+        }
+    }
+}

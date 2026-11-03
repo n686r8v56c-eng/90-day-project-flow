@@ -1,1 +1,49 @@
 .fk-panel{border:1px solid #e7dcef;border-radius:14px;padding:13px;background:#fff;display:flex;flex-direction:column;gap:12px}.fk-head,.fk-session{display:flex;align-items:center;justify-content:space-between;gap:8px}.fk-head strong{display:block;font-size:15px}.fk-head small,.fk-session span{display:block;color:#90819e;font-size:12px;margin-top:3px}.fk-head button,.fk-session button{border:0;border-radius:8px;background:#f4eef9;color:#8160aa;padding:7px;display:inline-flex;align-items:center;gap:4px;font-size:12px}.fk-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.fk-metric{border:1px solid #e9ddf3;border-radius:11px;min-width:0;padding:11px;display:flex;flex-direction:column;gap:9px}.fk-metric-title{display:flex;justify-content:space-between;align-items:center;gap:5px}.fk-metric-title span{font-size:12px;color:#7b5d9f}.fk-metric-title button{border:0;background:none;padding:3px;display:grid;place-items:center}.fk-metric>strong{font-size:25px;color:#352c3c}.fk-metric>strong small{font-size:12px;font-weight:500}.fk-metric>small,.fk-notice{font-size:12px;color:#9a8da3}.fk-login{display:flex;flex-direction:column;gap:8px}.fk-login p{font-size:12px;color:#8e7fa0;margin:0}.fk-login input{box-sizing:border-box;min-width:0;width:100%;padding:10px;border:1px solid #e6dbee;border-radius:9px;background:white;font-size:16px}.fk-login button{display:flex;justify-content:center;align-items:center;gap:6px;padding:10px;background:#9974c8;border:0;border-radius:9px;color:#fff}.fk-error{background:#fff0f5;color:#b14665;border-radius:8px;padding:8px;font-size:12px;overflow-wrap:anywhere}.fk-notice{margin:0}@media(max-width:365px){.fk-metric{padding:8px}.fk-metric-title span{font-size:11px}}
+
+/* Phone text minimums; existing larger type remains unchanged. */
+@media (max-width: 749px) {
+    .fk-head strong {
+        font-size: 15px !important
+    }
+    .fk-head small {
+        font-size: 15px !important
+    }
+    .fk-session span {
+        font-size: 15px !important
+    }
+    .fk-head button {
+        font-size: 15px !important
+    }
+    .fk-session button {
+        font-size: 15px !important
+    }
+    .fk-metric-title span {
+        font-size: 15px !important
+    }
+    .fk-metric>strong {
+        font-size: 25px !important
+    }
+    .fk-metric>strong small {
+        font-size: 15px !important
+    }
+    .fk-metric>small {
+        font-size: 15px !important
+    }
+    .fk-notice {
+        font-size: 15px !important
+    }
+    .fk-login p {
+        font-size: 15px !important
+    }
+    .fk-login input {
+        font-size: 16px !important
+    }
+    .fk-error {
+        font-size: 15px !important
+    }
+    @media (max-width:365px) {
+        .fk-metric-title span {
+            font-size: 14px !important
+        }
+    }
+}

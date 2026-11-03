@@ -34,3 +34,86 @@
 .tb-activity-actions button.tb-feature-star{display:grid;place-items:center;border:0;background:transparent;padding:6px;border-radius:8px;cursor:pointer}
 .tb-activity-actions button.tb-feature-star:focus-visible{outline:2px solid #9873c8;outline-offset:2px}
 @media(max-width:390px){.tb-heading{flex-wrap:wrap}.tb-heading .tb-settings{margin-left:auto}.tb-budget-row{gap:7px}.tb-date{gap:9px}}
+
+
+/* Phone text minimums; existing larger type remains unchanged. */
+@media (max-width: 749px) {
+    .tb-heading h3 {
+        font-size: 19px !important
+    }
+    .tb-heading p {
+        font-size: 15px !important
+    }
+    .tb-foot {
+        font-size: 15px !important
+    }
+    .tb-settings {
+        font-size: 15px !important
+    }
+    .tb-date label {
+        font-size: 15px !important
+    }
+    .tb-date strong {
+        font-size: 16px !important
+    }
+    .tb-note {
+        font-size: 15px !important
+    }
+    .tb-activity-title strong {
+        font-size: 15px !important
+    }
+    .tb-budget-row {
+        font-size: 16px !important
+    }
+    .tb-add-controls label {
+        font-size: 15px !important
+    }
+    .tb-empty {
+        font-size: 16px !important
+    }
+    .tb-bridge-box p {
+        font-size: 15px !important
+    }
+    .tb-add p {
+        font-size: 15px !important
+    }
+    .tb-bridge-login input {
+        font-size: 16px !important
+    }
+    .tb-bridge-connected {
+        font-size: 15px !important
+    }
+    .tb-bridge-connected button {
+        font-size: 15px !important
+    }
+    .tb-bridge-error {
+        font-size: 15px !important
+    }
+    .tb-summary small {
+        font-size: 14px !important
+    }
+    .tb-summary strong {
+        font-size: 16px !important
+    }
+    .tb-over {
+        font-size: 15px !important
+    }
+    .tb-root input {
+        font-size: 16px !important
+    }
+    .tb-root select {
+        font-size: 16px !important
+    }
+    .tb-root textarea {
+        font-size: 16px !important
+    }
+    .tb-edit-minutes input {
+        font-size: 16px !important
+    }
+    .tb-add-controls input {
+        font-size: 16px !important
+    }
+    .tb-date input {
+        font-size: 16px !important
+    }
+}

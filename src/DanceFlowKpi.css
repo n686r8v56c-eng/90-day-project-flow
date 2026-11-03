@@ -22,3 +22,58 @@
 .dance-kpi-table-row>span{min-width:0;overflow-wrap:anywhere}.dance-kpi-table-row>span:not(:first-child){text-align:right}
 .dance-kpi-table-head{color:#967bad;background:#f9f6fc;font-weight:700}
 @media(max-width:370px){.dance-kpi-metric{padding:9px}.dance-kpi-top{font-size:12px}}
+
+
+/* Phone text minimums; existing larger type remains unchanged. */
+@media (max-width: 749px) {
+    .dance-kpi-head strong {
+        font-size: 16px !important
+    }
+    .dance-kpi-head small {
+        font-size: 15px !important
+    }
+    .dance-kpi-session {
+        font-size: 15px !important
+    }
+    .dance-kpi-login p {
+        font-size: 16px !important
+    }
+    .dance-kpi-login input {
+        font-size: 16px !important
+    }
+    .dance-kpi-select select {
+        font-size: 16px !important
+    }
+    .dance-kpi-select label {
+        font-size: 16px !important
+    }
+    .dance-kpi-select select {
+        font-size: 16px !important
+    }
+    .dance-kpi-top {
+        font-size: 16px !important
+    }
+    .dance-kpi-metric>strong {
+        font-size: 25px !important
+    }
+    .dance-kpi-metric>small {
+        font-size: 15px !important
+    }
+    .dance-kpi-note {
+        font-size: 15px !important
+    }
+    .dance-kpi-error {
+        font-size: 15px !important
+    }
+    .dance-kpi-breakdown>strong {
+        font-size: 16px !important
+    }
+    .dance-kpi-table-row {
+        font-size: 15px !important
+    }
+    @media (max-width:370px) {
+        .dance-kpi-top {
+            font-size: 15px !important
+        }
+    }
+}

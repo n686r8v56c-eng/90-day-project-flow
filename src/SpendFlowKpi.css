@@ -1,3 +1,38 @@
 .sf-link{border:1px solid #e9def3;border-radius:16px;padding:16px;margin:18px 0;background:#fff}.sf-link-head,.sf-link-session{display:flex;justify-content:space-between;align-items:center;gap:12px}.sf-link-head strong{display:block;color:#7455a6}.sf-link-head small{display:block;margin-top:4px;color:#827b8c}.sf-link button{cursor:pointer}.sf-link-head button,.sf-link-session button{display:flex;gap:5px;align-items:center;background:#f3edfa;color:#785bb1;border:0;border-radius:8px;padding:8px}.sf-link-session{font-size:12px;color:#797383;margin:12px 0;flex-wrap:wrap}.sf-login{display:grid;gap:10px;margin-top:12px}.sf-login p{font-size:13px;color:#746d7e}.sf-login input{width:100%;min-width:0;box-sizing:border-box;height:42px;font-size:16px;border:1px solid #decfec;background:white;color:#333;border-radius:9px;padding:10px}.sf-login>button{display:flex;align-items:center;justify-content:center;gap:6px;background:#8b72c3;border:none;border-radius:9px;padding:11px;color:white}.sf-kpi-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.sf-kpi{border:1px solid #e9e2f1;border-radius:12px;padding:12px;min-width:0}.sf-kpi-label{font-size:12px;color:#8269b8;display:flex;gap:5px;align-items:center}.sf-kpi strong{display:block;font-size:20px;margin:9px 0 3px;word-break:break-word}.sf-kpi small{font-size:11px;color:#7b7586}.sf-progress{height:6px;border-radius:5px;overflow:hidden;background:#eee9f3;margin-top:10px}.sf-progress i{display:block;height:100%;background:#a28bd2;border-radius:5px}.sf-kpi p,.sf-footnote{font-size:11px;line-height:1.55;color:#857d91;margin:8px 0 0}.sf-notice,.sf-error{font-size:13px;line-height:1.5}.sf-error{color:#b32245}@media(max-width:370px){.sf-kpi-grid{grid-template-columns:1fr}}
 
 .sf-kpi-label .sf-star{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;flex:0 0 32px;width:32px;height:32px;padding:4px;background:transparent;border:0;border-radius:9px;cursor:pointer}.sf-kpi-label .sf-star:focus-visible{outline:2px solid #9873c8;outline-offset:2px}.sf-kpi-label{display:flex;align-items:center;gap:6px;min-width:0}.sf-kpi-label span{min-width:0;flex:1}
+
+
+/* Phone text minimums; existing larger type remains unchanged. */
+@media (max-width: 749px) {
+    .sf-link-session {
+        font-size: 15px !important
+    }
+    .sf-login p {
+        font-size: 16px !important
+    }
+    .sf-login input {
+        font-size: 16px !important
+    }
+    .sf-kpi-label {
+        font-size: 15px !important
+    }
+    .sf-kpi strong {
+        font-size: 20px !important
+    }
+    .sf-kpi small {
+        font-size: 14px !important
+    }
+    .sf-kpi p {
+        font-size: 14px !important
+    }
+    .sf-footnote {
+        font-size: 14px !important
+    }
+    .sf-notice {
+        font-size: 16px !important
+    }
+    .sf-error {
+        font-size: 16px !important
+    }
+}

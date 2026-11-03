@@ -308,3 +308,5 @@ function Empty({text}){return <div className="empty"><ClipboardList size={28}/><
 function shiftMonth(m,n){let d=new Date(m+'-01T12:00:00');d.setMonth(d.getMonth()+n);return d.toISOString().slice(0,7)}
 function calendarCells(m){let d=new Date(m+'-01T12:00:00'),first=d.getDay(),count=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();return [...Array(first).fill(null),...Array.from({length:count},(_,i)=>`${m}-${String(i+1).padStart(2,'0')}`)]}
 createRoot(document.getElementById('root')).render(<App/>);
+
+import './mobile-readability.css';

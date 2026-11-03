@@ -310,3 +310,703 @@ header h1{font-size:20px;line-height:1.25}
 
 /* Missing deployment URL: open the existing card editor instead of hiding the link action. */
 .project-external-link.project-link-missing{border:0;cursor:pointer;color:#a18cb9;background:#f3edf8;padding:0;touch-action:manipulation}
+
+
+/* Phone text minimums; existing larger type remains unchanged. */
+@media (max-width: 749px) {
+    h1 {
+        font-size: 20px !important
+    }
+    .eyebrow {
+        font-size: 13px !important
+    }
+    .selector {
+        font-size: 15px !important
+    }
+    .menuitem {
+        font-size: 16px !important
+    }
+    .menuitem small {
+        font-size: 13px !important
+    }
+    .topline {
+        font-size: 14px !important
+    }
+    .topline b {
+        font-size: 16px !important
+    }
+    .sectionhead h2 {
+        font-size: 17px !important
+    }
+    .sectionhead p {
+        font-size: 15px !important
+    }
+    .muted {
+        font-size: 15px !important
+    }
+    .projectcard .emoji {
+        font-size: 22px !important
+    }
+    .projectcard strong {
+        font-size: 16px !important
+    }
+    .projectcard small {
+        font-size: 14px !important
+    }
+    .maintcard small {
+        font-size: 14px !important
+    }
+    .status {
+        font-size: 13px !important
+    }
+    .maintcard>span {
+        font-size: 23px !important
+    }
+    .maintcard strong {
+        font-size: 16px !important
+    }
+    .feature h3 {
+        font-size: 17px !important
+    }
+    .pill {
+        font-size: 14px !important
+    }
+    .split {
+        font-size: 15px !important
+    }
+    .split b {
+        font-size: 15px !important
+    }
+    .light {
+        font-size: 15px !important
+    }
+    .primary {
+        font-size: 15px !important
+    }
+    .outlink {
+        font-size: 15px !important
+    }
+    .task strong {
+        font-size: 16px !important
+    }
+    .record strong {
+        font-size: 16px !important
+    }
+    .task small {
+        font-size: 14px !important
+    }
+    .record small {
+        font-size: 14px !important
+    }
+    .record p {
+        font-size: 15px !important
+    }
+    .empty {
+        font-size: 16px !important
+    }
+    .monthhead strong {
+        font-size: 16px !important
+    }
+    .days>b {
+        font-size: 14px !important
+    }
+    .day {
+        font-size: 15px !important
+    }
+    .subhead {
+        font-size: 16px !important
+    }
+    .stats small {
+        font-size: 13px !important
+    }
+    .stats strong {
+        font-size: 19px !important
+    }
+    .analysiscard .split strong {
+        font-size: 16px !important
+    }
+    nav button {
+        font-size: 13px !important
+    }
+    .dialoghead h3 {
+        font-size: 17px !important
+    }
+    .dialog label {
+        font-size: 15px !important
+    }
+    .dialog input {
+        font-size: 16px !important
+    }
+    .dialog select {
+        font-size: 16px !important
+    }
+    .dialog textarea {
+        font-size: 16px !important
+    }
+    .auth input {
+        font-size: 16px !important
+    }
+    .dialog p {
+        font-size: 15px !important
+    }
+    .brandmark {
+        font-size: 40px !important
+    }
+    .authcard h1 {
+        font-size: 24px !important
+    }
+    .authcard p {
+        font-size: 15px !important
+    }
+    .textbtn {
+        font-size: 15px !important
+    }
+    @media (max-width:360px) {
+        h1 {
+            font-size: 17px !important
+        }
+    }
+    @media (max-width:360px) {
+        .selector {
+            font-size: 13px !important
+        }
+    }
+    @media (max-width:360px) {
+        .topline {
+            font-size: 13px !important
+        }
+    }
+    html {
+        font-size: 16px !important
+    }
+    header h1 {
+        font-size: 17px !important
+    }
+    .eyebrow {
+        font-size: 13px !important
+    }
+    .selector {
+        font-size: 14px !important
+    }
+    .sync-indicator {
+        font-size: 13px !important
+    }
+    .sectionhead h2 {
+        font-size: 15px !important
+    }
+    .sectionhead p {
+        font-size: 13px !important
+    }
+    .projectcard .emoji {
+        font-size: 17px !important
+    }
+    .projectcard strong {
+        font-size: 15px !important
+    }
+    .projectcard small {
+        font-size: 13px !important
+    }
+    .status {
+        font-size: 13px !important
+    }
+    .maintcard>span {
+        font-size: 18px !important
+    }
+    .maintcard strong {
+        font-size: 15px !important
+    }
+    .feature h3 {
+        font-size: 16px !important
+    }
+    .task strong {
+        font-size: 15px !important
+    }
+    .record strong {
+        font-size: 15px !important
+    }
+    .task small {
+        font-size: 13px !important
+    }
+    .record small {
+        font-size: 13px !important
+    }
+    .stats strong {
+        font-size: 16px !important
+    }
+    nav button {
+        font-size: 13px !important
+    }
+    .dialoghead h3 {
+        font-size: 15px !important
+    }
+    .dialog label {
+        font-size: 14px !important
+    }
+    .dialog input {
+        font-size: 16px !important
+    }
+    .dialog select {
+        font-size: 16px !important
+    }
+    .dialog textarea {
+        font-size: 16px !important
+    }
+    .auth input {
+        font-size: 16px !important
+    }
+    .brandmark {
+        font-size: 32px !important
+    }
+    .auth-eyebrow {
+        font-size: 13px !important
+    }
+    .authcard h1 {
+        font-size: 22px !important
+    }
+    .authcard>p {
+        font-size: 15px !important
+    }
+    .auth-switch button {
+        font-size: 15px !important
+    }
+    .authcard form label {
+        font-size: 14px !important
+    }
+    .authcard form .primary {
+        font-size: 16px !important
+    }
+    .password-wrap button {
+        font-size: 14px !important
+    }
+    .auth-foot {
+        font-size: 13px !important
+    }
+    @media (max-width:360px) {
+        header h1 {
+            font-size: 15px !important
+        }
+    }
+    @media (max-width:360px) {
+        .topline {
+            font-size: 13px !important
+        }
+    }
+    @media (max-width:360px) {
+        .selector {
+            font-size: 13px !important
+        }
+    }
+    .card-filters select {
+        font-size: 16px !important
+    }
+    .card-stage {
+        font-size: 13px !important
+    }
+    .card-focus {
+        font-size: 13px !important
+    }
+    .checklist-project-title {
+        font-size: 15px !important
+    }
+    .projectcard .emoji {
+        font-size: 19px !important
+    }
+    @media (max-width:360px) {
+        .card-stage {
+            font-size: 13px !important
+        }
+    }
+    @media (max-width:360px) {
+        .card-focus {
+            font-size: 13px !important
+        }
+    }
+    .projectcard .emoji {
+        font-size: 24px !important
+    }
+    .projectcard strong {
+        font-size: 17px !important
+    }
+    .projectcard small {
+        font-size: 16px !important
+    }
+    .projectcard .status {
+        font-size: 16px !important
+    }
+    .projectcard .card-stage {
+        font-size: 16px !important
+    }
+    .projectcard .card-focus {
+        font-size: 16px !important
+    }
+    .card-filters select {
+        font-size: 16px !important
+    }
+    @media (max-width:390px) {
+        .projectcard strong {
+            font-size: 16px !important
+        }
+    }
+    @media (max-width:390px) {
+        .projectcard small {
+            font-size: 15px !important
+        }
+    }
+    @media (max-width:390px) {
+        .projectcard .status {
+            font-size: 15px !important
+        }
+    }
+    @media (max-width:390px) {
+        .projectcard .card-stage {
+            font-size: 15px !important
+        }
+    }
+    @media (max-width:390px) {
+        .projectcard .card-focus {
+            font-size: 15px !important
+        }
+    }
+    .card-filters select {
+        font-size: 16px !important
+    }
+    .projectcard .emoji {
+        font-size: 25px !important
+    }
+    .projectcard strong {
+        font-size: 18px !important
+    }
+    .projectcard small {
+        font-size: 16px !important
+    }
+    .projectcard .status {
+        font-size: 16px !important
+    }
+    .projectcard .card-stage {
+        font-size: 16px !important
+    }
+    .projectcard .card-focus {
+        font-size: 16px !important
+    }
+    @media (max-width:390px) {
+        .projectcard strong {
+            font-size: 17px !important
+        }
+    }
+    @media (max-width:390px) {
+        .projectcard small {
+            font-size: 15px !important
+        }
+    }
+    @media (max-width:390px) {
+        .projectcard .status {
+            font-size: 15px !important
+        }
+    }
+    @media (max-width:390px) {
+        .projectcard .card-stage {
+            font-size: 15px !important
+        }
+    }
+    @media (max-width:390px) {
+        .projectcard .card-focus {
+            font-size: 15px !important
+        }
+    }
+    header h1 {
+        font-size: 20px !important
+    }
+    .eyebrow {
+        font-size: 14px !important
+    }
+    .selector {
+        font-size: 16px !important
+    }
+    .topline {
+        font-size: 16px !important
+    }
+    .topline b {
+        font-size: 16px !important
+    }
+    .sync-indicator {
+        font-size: 14px !important
+    }
+    .sectionhead h2 {
+        font-size: 18px !important
+    }
+    .sectionhead p {
+        font-size: 15px !important
+    }
+    .projectcard .emoji {
+        font-size: 22px !important
+    }
+    .projectcard strong {
+        font-size: 17px !important
+    }
+    .projectcard .status {
+        font-size: 16px !important
+    }
+    .projectcard .card-focus {
+        font-size: 16px !important
+    }
+    @media (max-width:390px) {
+        header h1 {
+            font-size: 18px !important
+        }
+    }
+    @media (max-width:390px) {
+        .eyebrow {
+            font-size: 13px !important
+        }
+    }
+    @media (max-width:390px) {
+        .selector {
+            font-size: 15px !important
+        }
+    }
+    @media (max-width:390px) {
+        .topline {
+            font-size: 15px !important
+        }
+    }
+    @media (max-width:390px) {
+        .projectcard strong {
+            font-size: 16px !important
+        }
+    }
+    @media (max-width:390px) {
+        .projectcard .card-focus {
+            font-size: 15px !important
+        }
+    }
+    @media (max-width:390px) {
+        .projectcard .status {
+            font-size: 15px !important
+        }
+    }
+    .maintcard>span {
+        font-size: 23px !important
+    }
+    .maintcard strong {
+        font-size: 15px !important
+    }
+    .maintcard small {
+        font-size: 15px !important
+    }
+    @media (max-width:390px) {
+        .maintcard strong {
+            font-size: 16px !important
+        }
+    }
+    @media (max-width:390px) {
+        .maintcard small {
+            font-size: 15px !important
+        }
+    }
+    .kpi-card-heading {
+        font-size: 17px !important
+    }
+    .kpi-preview small {
+        font-size: 16px !important
+    }
+    .kpi-preview strong {
+        font-size: 18px !important
+    }
+    .kpi-preview span {
+        font-size: 15px !important
+    }
+    .kpi-empty {
+        font-size: 16px !important
+    }
+    .kpi-count {
+        font-size: 15px !important
+    }
+    .kpi-pick strong {
+        font-size: 15px !important
+    }
+    .kpi-pick small {
+        font-size: 15px !important
+    }
+    .kpi-detail-right>span {
+        font-size: 15px !important
+    }
+    @media (max-width:390px) {
+        .kpi-card-heading {
+            font-size: 16px !important
+        }
+    }
+    @media (max-width:390px) {
+        .kpi-preview strong {
+            font-size: 17px !important
+        }
+    }
+    @media (max-width:390px) {
+        .kpi-detail-right>span {
+            font-size: 14px !important
+        }
+    }
+    .project-group-title {
+        font-size: 16px !important
+    }
+    @media (max-width:420px) {
+        .project-group-title {
+            font-size: 15px !important
+        }
+    }
+    .change-filters select {
+        font-size: 16px !important
+    }
+    .change-record small {
+        font-size: 15px !important
+    }
+    @media (max-width:390px) {
+        .change-filters select {
+            font-size: 16px !important
+        }
+    }
+    .calendar-tabs button {
+        font-size: 15px !important
+    }
+    .milestone-row strong {
+        font-size: 15px !important
+    }
+    .milestone-row small {
+        font-size: 15px !important
+    }
+    .maintcard-edit>span {
+        font-size: 23px !important
+    }
+    .maintcard-edit strong {
+        font-size: 15px !important
+    }
+    .maintcard-edit small {
+        font-size: 15px !important
+    }
+    @media (max-width:390px) {
+        .maintcard-edit strong {
+            font-size: 16px !important
+        }
+    }
+    .header-countdown {
+        font-size: 16px !important
+    }
+    .vision-card-heading small {
+        font-size: 15px !important
+    }
+    .vision-placeholder {
+        font-size: 15px !important
+    }
+    .card-checklist-title {
+        font-size: 14px !important
+    }
+    .projectcard .card-checklist-title {
+        font-size: 15px !important
+    }
+    .projectcard .card-focus {
+        font-size: 15px !important
+    }
+    @media (max-width:390px) {
+        .projectcard .card-checklist-title {
+            font-size: 14px !important
+        }
+    }
+    @media (max-width:390px) {
+        .projectcard .card-focus {
+            font-size: 14px !important
+        }
+    }
+    .vision-grid .vision-card-heading>span {
+        font-size: 17px !important
+    }
+    .vision-grid .vision-card-heading>small {
+        font-size: 15px !important
+    }
+    @media (max-width:380px) {
+        .vision-grid .vision-card-heading>span {
+            font-size: 15px !important
+        }
+    }
+    .vision-subtabs button {
+        font-size: 15px !important
+    }
+    .hidden-card-toggle {
+        font-size: 15px !important
+    }
+    .hidden-card-list>p {
+        font-size: 15px !important
+    }
+    .hidden-card-row {
+        font-size: 16px !important
+    }
+    .hidden-card-row>button {
+        font-size: 15px !important
+    }
+    .vision-grid .vision-secret-marker {
+        font-size: 14px !important
+    }
+    .vision-grid .vision-secret-copy>strong {
+        font-size: 16px !important
+    }
+    .vision-grid .vision-secret-copy>small {
+        font-size: 14px !important
+    }
+    .vision-grid .vision-secret-empty {
+        font-size: 15px !important
+    }
+    .vision-grid .vision-card-top .emoji {
+        font-size: 22px !important
+    }
+    .vision-grid .vision-project-name {
+        font-size: 17px !important
+    }
+    .vision-grid .vision-secret-count {
+        font-size: 15px !important
+    }
+    .vision-grid .vision-secret-copy>strong {
+        font-size: 15px !important
+    }
+    .vision-grid .vision-secret-copy>small {
+        font-size: 14px !important
+    }
+    .vision-grid .vision-secret-empty {
+        font-size: 15px !important
+    }
+    @media (max-width:390px) {
+        .vision-grid .vision-project-name {
+            font-size: 16px !important
+        }
+    }
+    .category-toolbar button {
+        font-size: 15px !important
+    }
+    .category-project-add button {
+        font-size: 15px !important
+    }
+    .category-manage-row input {
+        font-size: 16px !important
+    }
+    .category-manage-row button {
+        font-size: 15px !important
+    }
+    @media (max-width:390px) {
+        .category-toolbar button {
+            font-size: 14px !important
+        }
+    }
+    .category-toolbar>button {
+        font-size: 14px !important
+    }
+    .category-toolbar .hidden-card-toggle {
+        font-size: 14px !important
+    }
+    @media (max-width:370px) {
+        .category-toolbar>button {
+            font-size: 13px !important
+        }
+    }
+    @media (max-width:370px) {
+        .category-toolbar .hidden-card-toggle {
+            font-size: 13px !important
+        }
+    }
+}

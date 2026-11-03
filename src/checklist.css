@@ -77,3 +77,135 @@
 /* Two-level checklist: title and tasks only. */
 .cl-flat-list .cl-items{border-top:0;margin-top:0;padding-top:0}
 .cl-flat-list{margin-top:12px}
+
+
+/* Phone text minimums; existing larger type remains unchanged. */
+@media (max-width: 749px) {
+    .cl-header h1 {
+        font-size: 27px !important
+    }
+    .cl-helper {
+        font-size: 16px !important
+    }
+    .cl-list-row strong {
+        font-size: 15px !important
+    }
+    .cl-list-row small {
+        font-size: 15px !important
+    }
+    .cl-card h2 {
+        font-size: 19px !important
+    }
+    .cl-import {
+        font-size: 16px !important
+    }
+    .cl-editor textarea {
+        font-size: 16px !important
+    }
+    .cl-detail-head h2 {
+        font-size: 20px !important
+    }
+    .cl-muted {
+        font-size: 15px !important
+    }
+    .cl-group-toggle {
+        font-size: 15px !important
+    }
+    .cl-item label {
+        font-size: 16px !important
+    }
+    .cl-add {
+        font-size: 16px !important
+    }
+    .cl-error {
+        font-size: 16px !important
+    }
+    .cl-message {
+        font-size: 16px !important
+    }
+    @media (max-width:390px) {
+        .cl-detail-head h2 {
+            font-size: 18px !important
+        }
+    }
+    .cl-header h1 {
+        font-size: 30px !important
+    }
+    .cl-detail-head h2 {
+        font-size: 23px !important
+    }
+    .cl-muted {
+        font-size: 16px !important
+    }
+    .cl-group-toggle {
+        font-size: 18px !important
+    }
+    .cl-item label {
+        font-size: 16px !important
+    }
+    .cl-add {
+        font-size: 16px !important
+    }
+    .cl-list-row strong {
+        font-size: 17px !important
+    }
+    .cl-list-row small {
+        font-size: 16px !important
+    }
+    .cl-helper {
+        font-size: 16px !important
+    }
+    .cl-import {
+        font-size: 16px !important
+    }
+    .cl-editor textarea {
+        font-size: 16px !important
+    }
+    @media (max-width:390px) {
+        .cl-detail-head h2 {
+            font-size: 21px !important
+        }
+    }
+    @media (max-width:390px) {
+        .cl-item label {
+            font-size: 15px !important
+        }
+    }
+    .cl-archive-toggle {
+        font-size: 16px !important
+    }
+    .cl-tag-line button {
+        font-size: 16px !important
+    }
+    .cl-tag-expand {
+        font-size: 15px !important
+    }
+    .cl-tag-label input {
+        font-size: 16px !important
+    }
+    .cl-tag-edit input {
+        font-size: 16px !important
+    }
+    .cl-detail-tags {
+        font-size: 16px !important
+    }
+    .cl-detail-title-row h2 {
+        font-size: 23px !important
+    }
+    .cl-detail-title-row>.cl-muted {
+        font-size: 16px !important
+    }
+    @media (max-width:390px) {
+        .cl-detail-title-row h2 {
+            font-size: 21px !important
+        }
+    }
+    .cl-item .cl-task-label {
+        font-size: 16px !important
+    }
+    @media (max-width:390px) {
+        .cl-item .cl-task-label {
+            font-size: 15px !important
+        }
+    }
+}
