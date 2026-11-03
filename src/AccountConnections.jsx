@@ -5,6 +5,7 @@ import {mind} from './MindFlowKpi.jsx';
 import {care} from './CareLogKpi.jsx';
 import {beauty} from './BeautyCareKpi.jsx';
 import {dance} from './DanceFlowKpi.jsx';
+import {sing} from './SingFlowKpi.jsx';
 import {fashion} from './FashionFlowKpi.jsx';
 import {focusClient} from './useFocusTime.js';
 import './AccountConnections.css';
@@ -16,6 +17,7 @@ const apps=[
  {id:'care',label:'Care',client:care},
  {id:'beauty',label:'Beauty Care · Beauty / Body',client:beauty},
  {id:'dance',label:'Dance · Sequence',client:dance},
+ {id:'sing',label:'Sing Flow · Sing',client:sing},
  {id:'fashion',label:'Fashion Flow · Fashion',client:fashion}
 ];
 const statusShape=()=>Object.fromEntries(apps.map(x=>[x.id,x.client?'checking':'unconfigured']));
